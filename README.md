@@ -18,6 +18,7 @@ Three versions of the same content, each in a different design style:
 - Trading: markets, method and a trade journal with a running profit and loss chart
 - AI skills and the ADDO AI stack
 - Build planner with time estimates, and the five-step project process
+- Contact form on all three pages that emails you and saves to an owner-only inbox (setup in `SETUP-MESSAGES.md`)
 
 ## Run it
 

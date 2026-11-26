@@ -176,6 +176,14 @@ legend{font-weight:500;margin-bottom:10px}
 .soc .btns{margin-top:auto;justify-content:center}
 a.btn{display:inline-flex;align-items:center;text-decoration:none;color:inherit}
 a.btn.w{color:#16110e}
+.msgf{margin-top:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;position:relative}
+.msgf h3,.msgf .full{grid-column:1/-1}
+.msgf input,.msgf select,.msgf textarea{min-height:46px;font-size:16px;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid var(--edge);border-radius:12px;padding:0 14px}
+.msgf textarea{min-height:120px;padding:12px 14px;resize:vertical;font:inherit;font-size:16px}
+.msgf select{background-color:#2a201b}
+[data-msg-status][data-kind=ok]{color:#8ce3ad}[data-msg-status][data-kind=err]{color:#ff9b85}
+:root{--mx-bg:#221a16;--mx-ink:#f6f1ec;--mx-line:rgba(255,255,255,.14);--mx-accent:#ff6b1f;--mx-on:#16110e;--mx-mute:#b2a69d;--mx-dn:#ff9b85;--mx-r:20px;--mx-font:"Lexend",system-ui,sans-serif}
+@media(max-width:640px){.msgf{grid-template-columns:minmax(0,1fr)}}
 .ov{position:fixed;inset:0;z-index:50;background:rgba(8,6,5,.6);backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 16px}
 .ov.open{display:flex}
 .box{width:min(540px,100%);background:#221a16;border:1px solid var(--edge);border-radius:20px;overflow:hidden}
@@ -259,6 +267,7 @@ body:not(.owner) .av,body:not(.owner) #avail{cursor:default}
   <button class="nb" data-v="trading-ai" type="button"><svg class="i"><use href="#i-trend"/></svg><span class="tip">Trading and AI</span></button>
   <button class="nb" data-v="process" type="button"><svg class="i"><use href="#i-compass"/></svg><span class="tip">Process and contact</span></button>
   <div class="sp"></div>
+  <button class="nb" data-inbox type="button" aria-label="Messages"><svg class="i"><use href="#i-mail"/></svg><i class="badge" data-inbox-count hidden></i><span class="tip">Messages</span></button>
   <button class="nb" id="bell" type="button" aria-label="Recent builds"><svg class="i"><use href="#i-bell"/></svg><i class="badge"></i><span class="tip">Recent builds</span></button>
   <button class="nb own" id="gear" type="button" aria-label="Edit profile"><svg class="i"><use href="#i-gear"/></svg><span class="tip">Edit profile</span></button>
  </aside>
@@ -406,6 +415,16 @@ body:not(.owner) .av,body:not(.owner) #avail{cursor:default}
     <h2>Have something to build? Start with a message.</h2>
     <div><div class="mail" id="pMail">shepherdanoche5@gmail.com</div><p class="btns" style="margin-top:14px"><button class="btn w" id="copyMail" type="button">Copy email</button><a class="btn" id="mailLink" href="mailto:shepherdanoche5@gmail.com">Send an email</a></p></div>
    </div>
+   <form class="card msgf" id="msgForm" novalidate>
+    <input id="cHp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+    <h3 style="font-size:22px">Send a message</h3>
+    <input id="cName" type="text" placeholder="Your name" aria-label="Your name" required>
+    <input id="cMail" type="email" placeholder="Your email" aria-label="Your email" required>
+    <select id="cType" class="full" aria-label="Project type"><option value="">Project type</option><option value="0">Dashboard</option><option value="1">Website</option><option value="2">Web app</option><option value="3">AI agent</option><option value="4">Mobile-ready app</option><option value="5">Something else</option></select>
+    <textarea id="cMsg" class="full" placeholder="Tell me about your project" aria-label="Project details" required></textarea>
+    <div class="full btns"><button class="btn w" type="submit">Send message</button></div>
+    <p class="lbl full" data-msg-status role="status">You will get a reply at the email you enter.</p>
+   </form>
    <div class="connect">
     <article class="card soc"><div class="sh2"><span class="th" style="background:#5fd38d"><svg class="i"><use href="#i-chat"/></svg></span><div><b>WhatsApp</b><span>+224 666 74 91 91</span></div></div>
      <div class="qrw"><svg class="qr" role="img" aria-label="QR code" viewBox="0 0 29 29" class="segno"><path fill="#fff" d="M0 0h29v29h-29z"/><path class="qrline" stroke="#16110e" d="M2 2.5h7m1 0h1m2 0h1m1 0h1m2 0h1m1 0h7m-25 1h1m5 0h1m1 0h1m2 0h2m5 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m2 0h3m1 0h2m3 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h1m3 0h1m5 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m3 0h2m1 0h2m1 0h1m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-16 1h3m1 0h3m-16 1h1m2 0h8m1 0h1m2 0h1m1 0h1m2 0h1m1 0h3m-25 1h3m1 0h1m4 0h1m2 0h1m2 0h2m2 0h5m-21 1h2m1 0h2m2 0h4m1 0h1m1 0h3m1 0h1m2 0h1m-25 1h3m2 0h1m2 0h1m3 0h1m2 0h2m1 0h2m1 0h4m-24 1h2m3 0h1m4 0h2m1 0h2m1 0h2m5 0h1m-25 1h6m1 0h1m4 0h2m1 0h1m4 0h1m2 0h1m-24 1h2m3 0h2m2 0h2m3 0h2m1 0h1m2 0h5m-25 1h1m1 0h2m1 0h1m1 0h3m2 0h1m2 0h1m3 0h1m1 0h2m1 0h1m-25 1h1m3 0h1m1 0h6m1 0h2m1 0h5m1 0h2m-16 1h1m3 0h1m1 0h1m1 0h1m3 0h1m1 0h2m-24 1h7m1 0h2m1 0h1m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1m-25 1h1m5 0h1m1 0h2m2 0h3m1 0h1m3 0h1m-21 1h1m1 0h3m1 0h1m1 0h4m3 0h6m-21 1h1m1 0h3m1 0h1m1 0h1m1 0h4m1 0h4m4 0h2m-25 1h1m1 0h3m1 0h1m4 0h1m2 0h1m2 0h1m2 0h5m-25 1h1m5 0h1m2 0h4m1 0h1m4 0h2m1 0h3m-25 1h7m1 0h2m1 0h1m2 0h1m1 0h1m1 0h1m2 0h1m2 0h1"/></svg></div>
@@ -556,7 +575,7 @@ $('#layers').innerHTML=LY.map(l=>`<div style="background:${l[2]};width:${l[3]}%"
 
 /* views */
 const TITLES={overview:'Studio overview',services:'Services and ADDO',planner:'Plan a build','trading-ai':'Trading and AI',process:'Process and contact'};
-const show=v=>{if(!TITLES[v])v='overview';document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.dataset.view===v));document.querySelectorAll('.nb[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));$('#vTitle').textContent=TITLES[v];if(location.hash.slice(1)!==v)history.replaceState(null,'','#'+v);if(v==='overview')requestAnimationFrame(draw);if(v==='trading-ai')requestAnimationFrame(drawEq)};
+const show=v=>{if(v==='inbox')return;if(!TITLES[v])v='overview';document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.dataset.view===v));document.querySelectorAll('.nb[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));$('#vTitle').textContent=TITLES[v];if(location.hash.slice(1)!==v)history.replaceState(null,'','#'+v);if(v==='overview')requestAnimationFrame(draw);if(v==='trading-ai')requestAnimationFrame(drawEq)};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-v],[data-go]');if(b){show(b.dataset.v||b.dataset.go);window.scrollTo(0,0)}});
 window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
 $('#mailBtn').addEventListener('click',()=>show('process'));
@@ -674,5 +693,6 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLower
 show(location.hash.slice(1)||'overview');
 }
 </script>
+<script type="module">import {initMessages} from '../messages.js';initMessages({page:'Glass'});</script>
 </body>
 </html>
