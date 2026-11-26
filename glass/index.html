@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Addo.corp</title>
+<link rel="artifact-thumbnail" href="thumb.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: a studio control room in frosted glass, after the user's reference
+   IDEA a glass analytics app for a one-person company: sidebar, hero card, live chart, capability index
+   PICTURE the hero card with a glowing ADDO orb (or the founder's own photo) and a glass stats strip over it
+   COLOUR warm charcoal ground with an orange glow, glass panels, orange #ff6b1f action, yellow #f2d74e for data
+   TYPE Lexend throughout, light to medium weights
+   LAYOUT icon rail left; hero left two rows, chart and latest build stacked right, table full width below; phone: one column, rail becomes a bottom bar */
+:root{color-scheme:dark;--bg:#120e0c;--ink:#f6f1ec;--mute:#b2a69d;--o:#ff6b1f;--y:#f2d74e;--glass:linear-gradient(160deg,rgba(255,255,255,.11),rgba(255,255,255,.035));--edge:rgba(255,255,255,.13);--soft:rgba(255,255,255,.07)}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(60% 50% at 38% 30%,rgba(255,107,31,.30),transparent 70%),radial-gradient(40% 40% at 85% 5%,rgba(242,215,78,.10),transparent 70%),radial-gradient(50% 50% at 10% 100%,rgba(120,60,30,.35),transparent 70%),var(--bg);background-attachment:fixed;color:var(--ink);font:15px/1.55 "Lexend",system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-weight:500;letter-spacing:-.02em;line-height:1.08;margin:0;text-wrap:balance}
+p{margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--y);outline-offset:2px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app{max-width:1360px;margin:clamp(0px,2vw,28px) auto;padding:clamp(12px,1.6vw,20px);display:grid;grid-template-columns:72px minmax(0,1fr);gap:clamp(14px,2vw,28px);background:rgba(36,28,24,.55);border:1px solid var(--edge);border-radius:30px;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);min-height:calc(100% - 56px)}
+.side{background:rgba(12,9,8,.75);border-radius:22px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0;position:sticky;top:20px;height:calc(100vh - 80px);max-height:820px}
+.logo{width:40px;height:40px;margin-bottom:18px}
+.nb{width:44px;height:44px;border-radius:12px;border:1px solid transparent;background:none;display:grid;place-items:center;color:var(--mute);cursor:pointer;position:relative}
+.nb:hover{color:var(--ink);background:var(--soft)}
+.nb.on{color:var(--ink);background:rgba(255,255,255,.12);border-color:var(--edge)}
+.nb .tip{position:absolute;left:54px;white-space:nowrap;background:#000;color:var(--ink);font-size:13px;padding:4px 9px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s}
+.nb:hover .tip{opacity:1}
+.sp{flex:1}
+.badge{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--o)}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:6px 4px 18px}
+.top h1{font-size:clamp(26px,3vw,34px);flex:1}
+.ib{width:44px;height:44px;border-radius:50%;border:1px solid var(--edge);background:var(--soft);display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.ib:hover{background:rgba(255,255,255,.14)}
+.av{width:44px;height:44px;border-radius:50%;border:2px solid var(--o);padding:0;overflow:hidden;cursor:pointer;background:#2a1d16;display:grid;place-items:center;font-weight:600}
+.av img{width:100%;height:100%;object-fit:cover}
+.pill{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:99px;border:1px solid var(--edge);background:var(--soft);cursor:pointer;font-size:14px}
+.dot{width:9px;height:9px;border-radius:50%;background:#5fd38d;box-shadow:0 0 10px #5fd38d}
+.pill.busy .dot{background:var(--o);box-shadow:0 0 10px var(--o)}
+.card{background:var(--glass);border:1px solid var(--edge);border-radius:24px;padding:clamp(16px,2vw,24px);position:relative;overflow:hidden}
+.lbl{font-size:13px;color:var(--mute)}
+.view{display:none}
+.view.on{display:block}
+.grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px}
+.hero{grid-row:span 2;min-height:440px;padding:0;display:grid}
+.heroTxt{position:relative;z-index:2;padding:clamp(20px,3vw,36px);max-width:56%;align-self:start}
+.heroTxt h2{font-size:clamp(30px,3.6vw,46px);margin:10px 0 12px}
+.heroTxt p{color:#ddd2c9;max-width:34ch}
+.who{margin-top:14px;font-size:14px;color:var(--mute)}
+.who b{color:var(--ink);font-weight:500}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn{min-height:44px;padding:0 20px;border-radius:12px;border:1px solid var(--edge);background:var(--soft);cursor:pointer;font-weight:500;font-size:14px}
+.btn:hover{background:rgba(255,255,255,.14)}
+.btn.w{background:#fff;color:#16110e;border-color:#fff}
+.btn.w:hover{background:var(--y);border-color:var(--y)}
+.art{position:absolute;right:0;top:0;bottom:0;width:62%;z-index:1}
+.art svg,.art img{width:100%;height:100%;display:block;object-fit:cover}
+.art.photo::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 60% at 60% 40%,rgba(255,107,31,.28),transparent 70%),linear-gradient(to top,rgba(18,14,12,.55),transparent 45%);mix-blend-mode:normal;pointer-events:none}
+.art img{filter:brightness(.88) contrast(1.05);-webkit-mask-image:linear-gradient(to right,transparent,#000 35%);mask-image:linear-gradient(to right,transparent,#000 35%)}
+.stats{position:relative;z-index:3;align-self:end;margin:0 16px 16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) 44px;gap:8px;align-items:center;background:rgba(40,30,26,.45);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--edge);border-radius:20px;padding:16px 18px}
+.stats b{display:block;font-size:clamp(28px,3vw,38px);font-weight:400;letter-spacing:-.03em;line-height:1}
+.stats span{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute);margin-top:6px}
+.stats i{width:14px;height:14px;border-radius:4px;flex:none}
+.round{width:44px;height:44px;border-radius:50%;border:0;background:#0c0908;color:#fff;display:grid;place-items:center;cursor:pointer}
+.round:hover{background:var(--o)}
+.chart{min-height:260px;display:flex;flex-direction:column}
+.chart .fig{position:relative;flex:1;min-height:200px;margin-top:8px}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.fig text{fill:var(--mute);font-size:12px;font-family:Lexend,sans-serif}
+.latest{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:14px;align-items:stretch}
+.big{font-size:clamp(34px,3.4vw,44px);font-weight:400;color:var(--y);letter-spacing:-.03em;line-height:1;margin:12px 0 6px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(95,211,141,.15);color:#8ce3ad}
+.obj{border-radius:18px;background:rgba(255,255,255,.08);border:1px solid var(--edge);display:flex;flex-direction:column;align-items:center;justify-content:end;padding:10px;font-size:13px;color:#ddd2c9;min-height:150px}
+.obj svg{width:100%;flex:1;max-height:130px}
+.tbl{grid-column:1/-1}
+.thead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.thead h3{font-size:17px;font-weight:400}
+select{min-height:44px;border-radius:12px;border:1px solid var(--edge);background:#2a201b;padding:0 36px 0 14px;font-size:16px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23f6f1ec' fill='none' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:separate;border-spacing:0 8px}
+th{text-align:left;font-weight:400;font-size:13px;color:var(--mute);padding:0 12px 8px;border-bottom:1px solid var(--edge)}
+td{background:rgba(255,255,255,.07);padding:10px 12px;vertical-align:middle;font-size:14px}
+td:first-child{border-radius:16px 0 0 16px}
+td:last-child{border-radius:0 16px 16px 0}
+.cap{display:flex;align-items:center;gap:12px}
+.th{width:52px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none;color:#16110e}
+.cap b{font-weight:500;display:block}
+.cap small{color:var(--mute);font-size:12px;display:flex;align-items:center;gap:6px}
+.cap small i{width:8px;height:8px;border-radius:50%}
+.desc{color:#ddd2c9;max-width:38ch}
+.stg{white-space:nowrap;color:var(--mute)}
+.stg b{color:var(--ink);font-weight:500}
+.track{display:flex;gap:4px}
+.track i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.14)}
+.track i.p{background:rgba(242,215,78,.4)}
+.track i.on{background:var(--y);box-shadow:0 0 8px var(--y)}
+.vh{margin-bottom:16px;color:var(--mute);max-width:62ch}
+.svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.svc .card{display:flex;flex-direction:column;gap:10px}
+.svc h3{font-size:21px}
+.svc p{color:#ddd2c9}
+.svc .th{width:44px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:auto 0 0}
+.tags li{font-size:12px;padding:4px 10px;border-radius:99px;background:var(--soft);border:1px solid var(--edge)}
+.later{font-size:13px;color:var(--y)}
+.lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.lists ul{margin:8px 0 0;padding-left:18px;color:#ddd2c9}
+.plan{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+fieldset{border:0;padding:0;margin:0 0 20px}
+legend{font-weight:500;margin-bottom:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
+.opt span{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--edge);background:var(--soft);font-size:14px}
+.opt input:checked+span{background:#fff;color:#16110e;border-color:#fff}
+.opt input:focus-visible+span{outline:2px solid var(--y);outline-offset:2px}
+.weeks{font-size:clamp(52px,6vw,76px);font-weight:300;letter-spacing:-.04em;line-height:1;color:var(--y);white-space:nowrap;margin:8px 0}
+.phases{display:flex;height:38px;gap:3px;margin:18px 0 10px}
+.phases div{border-radius:8px;background:var(--o);transition:flex-grow .3s}
+.phases div:nth-child(even){background:rgba(255,255,255,.25)}
+.plegend{display:grid;grid-template-columns:repeat(auto-fit,minmax(7em,1fr));gap:6px 12px;font-size:13px;color:var(--mute)}
+.plegend b{color:var(--ink);font-weight:500;white-space:nowrap}
+.note{font-size:13px;color:var(--mute);margin-top:12px}
+.route{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:r}
+.route li{counter-increment:r;padding:16px;border-radius:18px;background:var(--soft);border:1px solid var(--edge)}
+.route li::before{content:counter(r);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--o);font-weight:600;margin-bottom:12px}
+.route b{display:block;font-weight:500;font-size:17px;margin-bottom:4px}
+.route span{font-size:14px;color:#ddd2c9}
+.contact{margin-top:16px;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(255,107,31,.55),rgba(255,107,31,.15))}
+.contact h2{font-size:clamp(28px,3.4vw,42px);max-width:18ch}
+.mail{font-size:clamp(22px,2.6vw,30px);overflow-wrap:anywhere}
+.tgrid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:16px}
+.sh{font-size:clamp(24px,2.6vw,32px);margin:6px 0 16px}
+.mk{display:grid;gap:10px;margin-bottom:18px}
+.mk div{padding:14px;border-radius:16px;background:var(--soft);border:1px solid var(--edge)}
+.mk b{font-weight:500;display:block}
+.mk p{font-size:14px;color:#ddd2c9;margin-top:4px}
+.mk .tags{margin-top:10px}
+.meth{margin:8px 0 0;padding-left:18px;color:#ddd2c9;font-size:14px}
+.jstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:6px}
+.jstats b{display:block;font-size:clamp(22px,2.4vw,30px);font-weight:400;letter-spacing:-.03em;white-space:nowrap}
+.jstats span{font-size:12px;color:var(--mute)}
+.up{color:#8ce3ad}.dn{color:#ff9b85}
+.fig.eq{position:relative;height:150px;margin:6px 0 12px}
+.jform{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:6px}
+.jform input,.jform select{min-height:44px;font-size:16px;border-radius:12px;border:1px solid var(--edge);background:rgba(255,255,255,.06);padding:0 12px;color:var(--ink)}
+.jform select{background-color:#2a201b;padding-right:32px}
+.jt td{font-size:13px;padding:8px 10px;white-space:nowrap}
+.jt td:nth-child(2){white-space:normal;min-width:140px}
+.jt .r{text-align:right;font-variant-numeric:tabular-nums}
+.smp{font-size:11px;padding:1px 7px;border-radius:99px;background:rgba(242,215,78,.18);color:var(--y);margin-left:6px}
+.del{width:32px;height:32px;border-radius:8px;border:0;background:none;color:var(--mute);cursor:pointer;display:grid;place-items:center}
+.del:hover{color:var(--ink);background:var(--soft)}
+.aiw{margin-top:16px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(16px,3vw,36px);align-items:center}
+.comp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.comp div{padding:14px;border-radius:16px;background:var(--soft);border:1px solid var(--edge)}
+.comp b{display:block;font-weight:500}
+.comp p{font-size:14px;color:#ddd2c9;margin-top:4px}
+.layers{display:grid;gap:6px;margin-top:12px;justify-items:center}
+.layers div{border-radius:14px;padding:12px 16px;color:#16110e;text-align:center;width:100%}
+.layers b{display:block;font-weight:600}
+.layers span{font-size:13px}
+.connect{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.soc{display:flex;flex-direction:column;gap:16px}
+.sh2{display:flex;align-items:center;gap:12px}
+.sh2 b{display:block;font-weight:500;font-size:17px}
+.sh2 div span{font-size:14px;color:var(--mute);overflow-wrap:anywhere}
+.qrw{background:#fff;border-radius:18px;padding:14px;width:min(220px,100%);align-self:center}
+.qr{display:block;width:100%;height:auto}
+.soc .btns{margin-top:auto;justify-content:center}
+a.btn{display:inline-flex;align-items:center;text-decoration:none;color:inherit}
+a.btn.w{color:#16110e}
+.ov{position:fixed;inset:0;z-index:50;background:rgba(8,6,5,.6);backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 16px}
+.ov.open{display:flex}
+.box{width:min(540px,100%);background:#221a16;border:1px solid var(--edge);border-radius:20px;overflow:hidden}
+.box>input{width:100%;font-size:16px;padding:16px 18px;border:0;border-bottom:1px solid var(--edge);background:none}
+.cmds{list-style:none;margin:0;padding:6px;max-height:50vh;overflow:auto}
+.cmds li{padding:11px 12px;border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;gap:12px}
+.cmds li span{color:var(--mute);font-size:13px}
+.cmds li.act{background:rgba(255,255,255,.09)}
+.form{padding:22px;display:grid;gap:12px}
+.form label{display:grid;gap:4px;font-size:13px;color:var(--mute)}
+.form input{font-size:16px;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid var(--edge);border-radius:10px;padding:10px 12px}
+.row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.pop{position:absolute;z-index:40;width:280px;background:#221a16;border:1px solid var(--edge);border-radius:16px;padding:14px;display:none}
+.pop.open{display:block}
+.pop li{padding:8px 0;border-bottom:1px solid var(--edge);font-size:14px}
+.pop li:last-child{border:0}
+.pop small{display:block;color:var(--mute)}
+.own{display:none!important}
+body.owner .own{display:grid!important}
+body:not(.owner) .av,body:not(.owner) #avail{cursor:default}
+.err{color:#ff9b85;font-size:14px;min-height:1em}
+.err:empty{display:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#fff;color:#16110e;padding:10px 18px;border-radius:10px;font-weight:500;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60}
+.toast.show{opacity:1}
+@media(max-width:1000px){.connect{grid-template-columns:repeat(2,minmax(0,1fr))}.svc{grid-template-columns:repeat(2,minmax(0,1fr))}.route{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){.tgrid,.aiw{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:860px){.grid,.plan{grid-template-columns:minmax(0,1fr)}.hero{grid-row:auto}.heroTxt{max-width:70%}}
+@media(max-width:640px){
+.app{grid-template-columns:minmax(0,1fr);margin:0;border-radius:0;border:0;padding:12px 12px 96px}
+.side{position:fixed;top:auto;bottom:10px;left:10px;right:10px;height:auto;flex-direction:row;justify-content:space-around;padding:8px;z-index:30}
+.logo,.sp,.nb .tip{display:none}
+.top h1{flex-basis:100%;order:-1}
+.heroTxt{max-width:100%;padding-bottom:0}
+.hero{min-height:0}
+.art{position:relative;width:100%;height:320px;margin-top:-10px}
+.art img{-webkit-mask-image:linear-gradient(to bottom,transparent,#000 30%);mask-image:linear-gradient(to bottom,transparent,#000 30%)}
+.stats{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:-40px}
+.stats .round{display:none}
+.latest,.svc,.lists,.route,.comp,.connect{grid-template-columns:minmax(0,1fr)}
+.jstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.layers div{width:100%!important}
+.hide-s{display:none}
+}
+@media(prefers-reduced-motion:reduce){.phases div{transition:none}.orbit{animation:none!important}}
+.orbit{transform-origin:200px 200px;animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-home" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 15v-4M12 15V9M15 15v-2"/></symbol>
+ <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4 8-4z"/><path d="M4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
+ <symbol id="i-plan" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M8 14h3M8 17h6"/></symbol>
+ <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M15 9l-2 4-4 2 2-4 4-2z"/></symbol>
+ <symbol id="i-mail" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M5 8l7 5 7-5"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></symbol>
+ <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15L6 16zM10 20h4"/></symbol>
+ <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></symbol>
+ <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+ <symbol id="i-voice" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0012 0M12 17v4"/></symbol>
+ <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 01-10 0V8zM12 16v5"/></symbol>
+ <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></symbol>
+ <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/></symbol>
+ <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 6l3 3"/></symbol>
+ <symbol id="i-web" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 9h18M7 7h.01M10 7h.01"/></symbol>
+ <symbol id="i-trend" viewBox="0 0 24 24"><path d="M4 17l5-5 4 3 7-8M15 7h5v5"/></symbol>
+ <symbol id="i-brain" viewBox="0 0 24 24"><path d="M9 4a3 3 0 00-3 3 3 3 0 00-2 5 3 3 0 002 5 3 3 0 006 1V5a2 2 0 00-3-1zM15 4a3 3 0 013 3 3 3 0 012 5 3 3 0 01-2 5 3 3 0 01-6 1"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M5 19l1.2-3.6A7.5 7.5 0 1112 19.5a7.6 7.6 0 01-3.4-.8L5 19z"/></symbol>
+ <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0111 0M16 5.5a3 3 0 010 5.5M18 14.5a5 5 0 012.5 4.5"/></symbol>
+ <symbol id="i-camera" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.5"/><path d="M16.5 7.5h.01"/></symbol>
+ <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="3"/><path d="M11 18h2"/></symbol>
+</svg>
+
+<div class="app">
+ <aside class="side" aria-label="Main navigation">
+  <svg class="logo" viewBox="0 0 40 40" aria-label="Addo.corp"><rect width="40" height="40" rx="11" fill="#fff"/><path d="M20 8l9 24h-5l-1.6-4.6h-4.8L16 32h-5L20 8zm0 9.5l-1.4 5.2h2.8L20 17.5z" fill="#120e0c"/><circle cx="31" cy="31" r="3" fill="#ff6b1f"/></svg>
+  <button class="nb on" data-v="overview" type="button"><svg class="i"><use href="#i-home"/></svg><span class="tip">Overview</span></button>
+  <button class="nb" data-v="services" type="button"><svg class="i"><use href="#i-layers"/></svg><span class="tip">Services and ADDO</span></button>
+  <button class="nb" data-v="planner" type="button"><svg class="i"><use href="#i-plan"/></svg><span class="tip">Plan a build</span></button>
+  <button class="nb" data-v="trading-ai" type="button"><svg class="i"><use href="#i-trend"/></svg><span class="tip">Trading and AI</span></button>
+  <button class="nb" data-v="process" type="button"><svg class="i"><use href="#i-compass"/></svg><span class="tip">Process and contact</span></button>
+  <div class="sp"></div>
+  <button class="nb" id="bell" type="button" aria-label="Recent builds"><svg class="i"><use href="#i-bell"/></svg><i class="badge"></i><span class="tip">Recent builds</span></button>
+  <button class="nb own" id="gear" type="button" aria-label="Edit profile"><svg class="i"><use href="#i-gear"/></svg><span class="tip">Edit profile</span></button>
+ </aside>
+
+ <main>
+  <header class="top">
+   <h1 id="vTitle">Studio overview</h1>
+   <button class="pill" id="avail" type="button"><i class="dot"></i><span>Open to projects</span></button>
+   <button class="ib" id="mailBtn" type="button" aria-label="Contact"><svg class="i"><use href="#i-mail"/></svg></button>
+   <button class="ib" id="openCmd" type="button" aria-label="Search (Ctrl K)"><svg class="i"><use href="#i-search"/></svg></button>
+   <button class="av" id="avBtn" type="button" aria-label="Edit profile"></button>
+  </header>
+
+  <section class="view on" data-view="overview">
+   <div class="grid">
+    <div class="card hero">
+     <div class="heroTxt">
+      <span class="lbl">Founder-led studio, 5 years in computing and AI</span>
+      <h2>Dashboards, websites, apps and AI agents, built end to end</h2>
+      <p>From the first sketch to a deployed, secured product. ADDO, the agent built here, is the proof.</p>
+      <div class="who"><b id="pName">Shepherd Addo Anokye</b><br><span id="pRole">Dashboard specialist, full-stack developer, AI builder and trader</span><br><span id="pAge">29</span> years old, 5 years of experience<br>Studio time <b id="clock">--:--</b></div>
+      <div class="btns"><button class="btn w" type="button" data-go="planner">Start a project</button><button class="btn" type="button" data-go="services">See services</button><button class="btn" type="button" data-go="trading-ai">Trading and AI</button></div>
+     </div>
+     <div class="art" id="art"></div>
+     <div class="stats">
+      <div><b id="sCap">24</b><span><i style="background:var(--o)"></i>Capabilities</span></div>
+      <div><b id="sInt">6</b><span><i style="background:var(--y)"></i>Integrations</span></div>
+      <div><b id="sDb">3</b><span><i style="background:#ffb08a"></i>Databases</span></div>
+      <div><b>5</b><span><i style="background:#f6f1ec"></i>Years of experience</span></div>
+      <button class="round" type="button" id="toTable" aria-label="See all capabilities"><svg class="i"><use href="#i-arrow"/></svg></button>
+     </div>
+    </div>
+
+    <div class="card chart">
+     <span class="lbl">ADDO capabilities, by build stage</span>
+     <div class="fig"><svg id="lc" role="img" aria-label="Capabilities grew from 2 to 24 across 8 build stages"></svg></div>
+    </div>
+
+    <div class="card latest">
+     <div>
+      <span class="lbl">Latest build</span>
+      <div class="big">Stage 8</div>
+      <p style="font-size:14px">Databases: SQLite, Supabase and Firebase, all tested.</p>
+      <p style="margin-top:10px"><span class="chip">Live</span> <span class="lbl">Firebase contact form</span></p>
+     </div>
+     <div class="obj">
+      <svg viewBox="0 0 120 110" aria-hidden="true"><defs><radialGradient id="og" cx="38%" cy="32%" r="70%"><stop offset="0" stop-color="#ffd2b0"/><stop offset=".45" stop-color="#ff6b1f"/><stop offset="1" stop-color="#5a1c05"/></radialGradient></defs><ellipse cx="60" cy="100" rx="34" ry="6" fill="#000" opacity=".35"/><circle cx="60" cy="54" r="38" fill="url(#og)"/><ellipse cx="60" cy="54" rx="56" ry="14" fill="none" stroke="#f2d74e" stroke-width="1.5" opacity=".7" transform="rotate(-18 60 54)"/><ellipse cx="47" cy="38" rx="11" ry="6" fill="#fff" opacity=".35"/></svg>
+      ADDO agent
+     </div>
+    </div>
+
+    <div class="card tbl" id="tbl">
+     <div class="thead"><h3>Capability index</h3><select id="filt" aria-label="Filter by discipline"></select></div>
+     <div class="scroll"><table>
+      <thead><tr><th>Capability</th><th class="hide-s">What it does</th><th>Built in</th><th class="hide-s">Stage</th></tr></thead>
+      <tbody id="rows"></tbody>
+     </table></div>
+    </div>
+   </div>
+  </section>
+
+  <section class="view" data-view="services">
+   <p class="vh">Every client project uses the same stack ADDO is built on.</p>
+   <div class="svc" id="svc"></div>
+   <div class="card" style="margin-top:16px">
+    <h3 style="font-size:24px">Flagship: ADDO, a Jarvis-style AI agent</h3>
+    <p style="margin-top:10px;color:#ddd2c9;max-width:75ch">A conversational agent in Python and Flask on the Claude API. It answers by voice to its wake word, reads images, works with Gmail and Calendar, writes and runs websites, pushes them to GitHub and stores data in SQLite, Supabase or Firebase. It runs privately on a Windows PC and is reachable from a phone over Tailscale.</p>
+    <div class="lists">
+     <div><span class="lbl">Design languages</span><ul><li>Skeuomorphism, neomorphism</li><li>Glassmorphism, claymorphism, liquid glass</li><li>Minimalism, maximalism, brutalism</li><li>Spatial UI</li></ul></div>
+     <div><span class="lbl">Security built in</span><ul><li>HTTPS and SSL, secure hosting and DNS</li><li>Authentication and private access</li><li>WAF, updates and monitoring</li><li>Backups, form and upload protection</li></ul></div>
+    </div>
+   </div>
+  </section>
+
+  <section class="view" data-view="planner">
+   <p class="vh">Pick what you need. The estimate, phases and stack update as you go; copy the brief to send it.</p>
+   <div class="plan">
+    <form class="card" id="pform" onsubmit="return false">
+     <fieldset><legend>Project type</legend><div class="opts" id="types"></div></fieldset>
+     <fieldset><legend>Add-ons</legend><div class="opts" id="addons"></div></fieldset>
+     <button class="btn" type="button" id="reset">Reset choices</button>
+    </form>
+    <div class="card">
+     <span class="lbl" id="rType">Web app</span>
+     <div class="weeks" id="rWeeks">4–7 wk</div>
+     <div class="phases" id="phases" aria-hidden="true"></div>
+     <div class="plegend" id="plegend"></div>
+     <p style="margin:16px 0"><span class="lbl">Stack</span><br><span id="rStack"></span></p>
+     <button class="btn w" type="button" id="copyBrief">Copy brief</button>
+     <p class="note">Week ranges are starting estimates for a single builder; adjust them once you set your own rates.</p>
+    </div>
+   </div>
+  </section>
+
+  <section class="view" data-view="trading-ai">
+   <p class="vh">Two skills that feed each other: reading markets, and building AI that does real work.</p>
+   <div class="tgrid">
+    <div class="card">
+     <span class="lbl">Trading</span>
+     <h2 class="sh">Markets I trade</h2>
+     <div class="mk" id="mk"></div>
+     <span class="lbl">Method</span>
+     <ul class="meth"><li>Technical chart analysis for short-term crypto markets</li><li>Research across prediction-market platforms before taking a side</li><li>Fractional shares to keep stock positions small</li><li>Every position logged in the journal</li></ul>
+    </div>
+    <div class="card">
+     <div class="thead"><h3>Trade journal</h3><button class="btn" type="button" id="jClear">Clear samples</button></div>
+     <div class="jstats" id="jStats"></div>
+     <div class="fig eq"><svg id="eq" role="img" aria-label="Running profit and loss"></svg></div>
+     <form class="jform" id="jForm">
+      <input id="jDate" type="date" aria-label="Date" required>
+      <input id="jMarket" type="text" placeholder="Market" aria-label="Market" required>
+      <select id="jPlat" aria-label="Platform"><option>Polymarket</option><option>Kalshi</option><option>Wealthsimple</option><option>Other</option></select>
+      <select id="jPos" aria-label="Position"><option>Yes</option><option>No</option><option>Buy</option><option>Sell</option></select>
+      <input id="jStake" type="number" step="0.01" min="0" placeholder="Stake" aria-label="Stake" required>
+      <input id="jPnl" type="number" step="0.01" placeholder="Result +/-" aria-label="Profit or loss" required>
+      <button class="btn w" type="submit">Log trade</button>
+     </form>
+     <div class="scroll"><table class="jt"><thead><tr><th>Date</th><th>Market</th><th>Platform</th><th>Side</th><th class="r">Stake</th><th class="r">P/L</th><th></th></tr></thead><tbody id="jRows"></tbody></table></div>
+     <p class="note" id="jNote">Rows tagged sample are examples; clear them and log your own. Entries stay in this browser.</p>
+    </div>
+   </div>
+   <div class="card aiw">
+    <div>
+     <span class="lbl">Artificial intelligence</span>
+     <h2 class="sh">AI used in production, not just in theory</h2>
+     <p class="vh" style="margin:0 0 16px">Each skill below is running inside ADDO today.</p>
+     <div class="comp" id="comp"></div>
+    </div>
+    <div>
+     <span class="lbl">The ADDO AI stack</span>
+     <div class="layers" id="layers"></div>
+    </div>
+   </div>
+  </section>
+
+  <section class="view" data-view="process">
+   <ol class="route">
+    <li><b>Discover</b><span>Goals, users and must-haves, written into one short brief.</span></li>
+    <li><b>Design</b><span>Screens in Figma, imported into code with colours and text intact.</span></li>
+    <li><b>Build</b><span>Front end, Flask back end, database and AI features, previewed live.</span></li>
+    <li><b>Secure</b><span>HTTPS, auth, protected forms and uploads, backups.</span></li>
+    <li><b>Ship</b><span>Pushed to GitHub, deployed and monitored after launch.</span></li>
+   </ol>
+   <div class="card contact">
+    <h2>Have something to build? Start with a message.</h2>
+    <div><div class="mail" id="pMail">shepherdanoche5@gmail.com</div><p class="btns" style="margin-top:14px"><button class="btn w" id="copyMail" type="button">Copy email</button><a class="btn" id="mailLink" href="mailto:shepherdanoche5@gmail.com">Send an email</a></p></div>
+   </div>
+   <div class="connect">
+    <article class="card soc"><div class="sh2"><span class="th" style="background:#5fd38d"><svg class="i"><use href="#i-chat"/></svg></span><div><b>WhatsApp</b><span>+224 666 74 91 91</span></div></div>
+     <div class="qrw"><svg class="qr" role="img" aria-label="QR code" viewBox="0 0 29 29" class="segno"><path fill="#fff" d="M0 0h29v29h-29z"/><path class="qrline" stroke="#16110e" d="M2 2.5h7m1 0h1m2 0h1m1 0h1m2 0h1m1 0h7m-25 1h1m5 0h1m1 0h1m2 0h2m5 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m2 0h3m1 0h2m3 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h1m3 0h1m5 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m3 0h2m1 0h2m1 0h1m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-16 1h3m1 0h3m-16 1h1m2 0h8m1 0h1m2 0h1m1 0h1m2 0h1m1 0h3m-25 1h3m1 0h1m4 0h1m2 0h1m2 0h2m2 0h5m-21 1h2m1 0h2m2 0h4m1 0h1m1 0h3m1 0h1m2 0h1m-25 1h3m2 0h1m2 0h1m3 0h1m2 0h2m1 0h2m1 0h4m-24 1h2m3 0h1m4 0h2m1 0h2m1 0h2m5 0h1m-25 1h6m1 0h1m4 0h2m1 0h1m4 0h1m2 0h1m-24 1h2m3 0h2m2 0h2m3 0h2m1 0h1m2 0h5m-25 1h1m1 0h2m1 0h1m1 0h3m2 0h1m2 0h1m3 0h1m1 0h2m1 0h1m-25 1h1m3 0h1m1 0h6m1 0h2m1 0h5m1 0h2m-16 1h1m3 0h1m1 0h1m1 0h1m3 0h1m1 0h2m-24 1h7m1 0h2m1 0h1m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1m-25 1h1m5 0h1m1 0h2m2 0h3m1 0h1m3 0h1m-21 1h1m1 0h3m1 0h1m1 0h4m3 0h6m-21 1h1m1 0h3m1 0h1m1 0h1m1 0h4m1 0h4m4 0h2m-25 1h1m1 0h3m1 0h1m4 0h1m2 0h1m2 0h1m2 0h5m-25 1h1m5 0h1m2 0h4m1 0h1m4 0h2m1 0h3m-25 1h7m1 0h2m1 0h1m2 0h1m1 0h1m1 0h1m2 0h1m2 0h1"/></svg></div>
+     <div class="btns"><a class="btn w" href="https://wa.me/224666749191" target="_blank" rel="noopener">Open chat</a><button class="btn" type="button" data-copy="+224666749191" data-msg="Number copied">Copy number</button></div></article>
+    <article class="card soc"><div class="sh2"><span class="th" style="background:#8fb4ff"><svg class="i"><use href="#i-people"/></svg></span><div><b>Facebook</b><span>Shepherd Addo Anokye</span></div></div>
+     <div class="qrw"><svg class="qr" role="img" aria-label="QR code" viewBox="0 0 33 33" class="segno"><path fill="#fff" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#16110e" d="M2 2.5h7m2 0h1m1 0h1m3 0h1m1 0h3m2 0h7m-29 1h1m5 0h1m1 0h1m1 0h4m1 0h1m2 0h3m1 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m2 0h4m1 0h1m1 0h1m2 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h2m3 0h1m3 0h2m2 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m4 0h1m2 0h3m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h3m3 0h1m1 0h3m2 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-19 1h2m1 0h1m1 0h1m1 0h2m1 0h1m-21 1h1m1 0h1m1 0h1m1 0h1m5 0h2m1 0h6m3 0h1m2 0h1m-28 1h1m2 0h2m2 0h2m1 0h1m1 0h5m4 0h2m2 0h1m2 0h1m-27 1h1m2 0h3m1 0h3m1 0h2m2 0h1m3 0h2m3 0h3m-28 1h4m2 0h1m3 0h1m1 0h1m1 0h1m1 0h2m2 0h2m1 0h1m2 0h1m-27 1h2m3 0h1m1 0h2m3 0h2m2 0h1m1 0h4m2 0h1m1 0h2m-29 1h3m1 0h1m2 0h1m2 0h1m2 0h2m2 0h2m1 0h4m1 0h1m2 0h1m-29 1h1m1 0h1m1 0h1m1 0h1m1 0h4m5 0h2m3 0h2m1 0h1m1 0h2m-29 1h6m2 0h11m1 0h1m4 0h1m1 0h1m-28 1h4m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m1 0h5m1 0h1m1 0h2m-28 1h1m10 0h1m2 0h2m3 0h3m2 0h2m1 0h1m-29 1h1m2 0h1m2 0h2m1 0h3m2 0h1m3 0h1m3 0h2m3 0h2m-28 1h2m1 0h2m2 0h1m1 0h6m1 0h1m2 0h1m1 0h1m2 0h1m1 0h1m-28 1h1m2 0h2m1 0h1m1 0h1m1 0h1m1 0h3m2 0h1m1 0h6m-17 1h1m1 0h1m1 0h1m4 0h1m1 0h2m3 0h1m1 0h3m-29 1h7m2 0h2m1 0h2m4 0h3m1 0h1m1 0h2m1 0h2m-29 1h1m5 0h1m3 0h1m1 0h3m1 0h3m1 0h1m3 0h2m1 0h2m-29 1h1m1 0h3m1 0h1m1 0h4m2 0h4m2 0h5m-25 1h1m1 0h3m1 0h1m2 0h2m1 0h1m4 0h4m3 0h1m1 0h3m-29 1h1m1 0h3m1 0h1m1 0h1m1 0h3m1 0h1m2 0h2m1 0h1m2 0h3m2 0h1m-29 1h1m5 0h1m4 0h2m2 0h3m1 0h2m3 0h1m2 0h1m-28 1h7m1 0h4m1 0h2m1 0h2m1 0h7m1 0h2"/></svg></div>
+     <div class="btns"><a class="btn w" href="https://www.facebook.com/share/1E1HHpbr5i/" target="_blank" rel="noopener">Open profile</a><button class="btn" type="button" data-copy="https://www.facebook.com/share/1E1HHpbr5i/" data-msg="Link copied">Copy link</button></div></article>
+    <article class="card soc"><div class="sh2"><span class="th" style="background:#ff9bc0"><svg class="i"><use href="#i-camera"/></svg></span><div><b>Instagram</b><span>@shepherdaddoanockye</span></div></div>
+     <div class="qrw"><svg class="qr" role="img" aria-label="QR code" viewBox="0 0 37 37" class="segno"><path fill="#fff" d="M0 0h37v37h-37z"/><path class="qrline" stroke="#16110e" d="M2 2.5h7m1 0h1m1 0h6m2 0h2m1 0h1m1 0h1m2 0h7m-33 1h1m5 0h1m3 0h2m1 0h3m4 0h3m3 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m4 0h3m1 0h1m4 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m2 0h3m1 0h1m4 0h2m2 0h3m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m2 0h4m2 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m1 0h2m1 0h2m1 0h4m2 0h1m1 0h1m1 0h1m1 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h3m2 0h1m2 0h1m-21 1h7m1 0h1m1 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h1m2 0h2m3 0h1m-33 1h1m4 0h1m4 0h3m1 0h2m2 0h3m1 0h2m2 0h2m1 0h2m1 0h1m-33 1h3m3 0h1m1 0h2m3 0h1m4 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m-30 1h3m1 0h1m1 0h2m1 0h1m2 0h2m3 0h1m2 0h3m4 0h4m-32 1h1m3 0h3m1 0h2m3 0h1m4 0h1m1 0h1m1 0h4m1 0h3m1 0h2m-31 1h1m1 0h2m2 0h3m1 0h1m2 0h7m1 0h1m2 0h1m2 0h1m1 0h2m-30 1h1m1 0h8m1 0h1m2 0h1m2 0h1m4 0h3m1 0h1m1 0h1m-31 1h1m1 0h1m5 0h4m2 0h2m1 0h2m1 0h2m1 0h4m1 0h2m-31 1h1m1 0h6m1 0h1m2 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h2m1 0h3m2 0h1m-33 1h4m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m2 0h9m1 0h2m1 0h1m-31 1h1m1 0h1m1 0h1m3 0h1m1 0h2m3 0h2m2 0h1m3 0h1m1 0h2m1 0h2m-32 1h3m1 0h2m4 0h3m2 0h2m2 0h1m1 0h3m1 0h1m1 0h6m-33 1h2m2 0h1m1 0h3m1 0h1m3 0h1m7 0h1m1 0h2m2 0h2m1 0h2m-33 1h4m4 0h3m1 0h1m1 0h3m1 0h4m1 0h1m1 0h2m3 0h1m1 0h1m-33 1h1m1 0h5m1 0h4m4 0h2m2 0h3m1 0h2m3 0h1m1 0h1m-32 1h1m1 0h4m3 0h1m3 0h2m2 0h3m1 0h1m3 0h2m2 0h3m-32 1h1m3 0h5m1 0h1m2 0h4m3 0h1m1 0h1m1 0h5m2 0h2m-25 1h1m1 0h3m2 0h2m1 0h3m2 0h2m3 0h1m1 0h1m1 0h1m-33 1h7m1 0h1m1 0h2m1 0h1m2 0h3m1 0h1m1 0h3m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m1 0h3m1 0h1m3 0h2m1 0h3m1 0h2m3 0h5m-33 1h1m1 0h3m1 0h1m1 0h1m3 0h1m1 0h2m2 0h1m3 0h1m1 0h6m-30 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h7m1 0h1m1 0h1m2 0h1m3 0h1m-33 1h1m1 0h3m1 0h1m1 0h6m1 0h1m1 0h1m2 0h2m1 0h5m2 0h1m-31 1h1m5 0h1m1 0h3m1 0h4m3 0h4m5 0h3m-31 1h7m2 0h1m1 0h1m2 0h2m1 0h3m2 0h3m1 0h2m3 0h1"/></svg></div>
+     <div class="btns"><a class="btn w" href="https://www.instagram.com/shepherdaddoanockye" target="_blank" rel="noopener">Open profile</a><button class="btn" type="button" data-copy="https://www.instagram.com/shepherdaddoanockye" data-msg="Link copied">Copy link</button></div></article>
+   </div>
+  </section>
+ </main>
+</div>
+
+<div class="pop" id="pop"><span class="lbl">Recent builds</span><ul style="list-style:none;margin:6px 0 0;padding:0" id="popList"></ul></div>
+<div class="ov" id="cmdOv" role="dialog" aria-modal="true" aria-label="Search"><div class="box">
+ <input id="cmdIn" type="text" placeholder="Jump to a view, capability or action" autocomplete="off" aria-label="Search">
+ <ul class="cmds" id="cmdList"></ul>
+</div></div>
+<div class="ov" id="profOv" role="dialog" aria-modal="true" aria-label="Edit profile"><div class="box">
+ <form class="form" id="profForm">
+  <h3>Edit profile</h3>
+  <label>Name<input id="fName" type="text"></label>
+  <label>Role<input id="fRole" type="text"></label>
+  <label>Age<input id="fAge" type="number" min="1" max="120"></label>
+  <label>Email<input id="fMail" type="email"></label>
+  <label>Time zone<input id="fTz" type="text" placeholder="Africa/Conakry"></label>
+  <label>Photo for the hero card and avatar<input id="fPhoto" type="file" accept="image/*"></label>
+  <div class="row" style="justify-content:flex-start"><button class="btn" type="button" id="rmPhoto">Show orb instead</button><button class="btn" type="button" id="defPhoto">Use my portrait</button></div>
+  <div class="row"><button class="btn" type="button" id="chgPass">Change password</button><button class="btn" type="button" id="lockBtn">Lock editing</button><span style="flex:1"></span><button class="btn" type="button" id="profCancel">Cancel</button><button class="btn w" type="submit" id="profSave">Save profile</button></div>
+ </form>
+</div></div>
+<div class="ov" id="authOv" role="dialog" aria-modal="true" aria-labelledby="authTitle"><div class="box">
+ <form class="form" id="authForm" autocomplete="on">
+  <h3 id="authTitle">Sign in to edit</h3>
+  <p class="lbl" id="authMsg">Enter your email and password to change your profile.</p>
+  <label id="aMailWrap">Email<input id="aMail" type="email" autocomplete="username" required></label>
+  <label>Password<input id="aPass" type="password" autocomplete="current-password" required minlength="8"></label>
+  <label id="aConfWrap" hidden>Confirm password<input id="aConf" type="password" autocomplete="new-password"></label>
+  <p class="err" id="aErr" role="alert"></p>
+  <div class="row"><button class="btn" type="button" id="authCancel">Cancel</button><button class="btn w" type="submit" id="aSubmit">Sign in</button></div>
+  <p class="lbl" id="aForgot">Forgot your password? Ask Claude in your Addo.corp project to reset it.</p>
+ </form>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem('addo.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('addo.'+k,JSON.stringify(v));return true}catch(e){return false}}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let tt;const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1800)};
+
+const ST=['Chat agent','Voice and PC control','Long-term memory','Vision','Gmail and Calendar','Code execution','Tools and craft','Databases'];
+const SS=['Chat','Voice','Memory','Vision','Mail','Code','Tools','Data'];
+const T=[
+ {k:'Interface',c:'#ff6b1f',ic:'voice',f:[['Voice mode','Wakes on “ADDO”, listens and answers aloud in several languages.',2],['Vision','Reads and analyses images you attach or paste.',4],['Live preview','Renders the site in a side panel and refreshes after every reply.',6],['Secure login','Password login, private access from PC and phone over Tailscale.',2],['Location','Browser geolocation with reverse geocoding.',2],['File reader','Reads text and code files you upload.',4]]},
+ {k:'Integrations',c:'#f2d74e',ic:'plug',f:[['Gmail + Calendar','Reads, writes and searches old emails and events.',5],['GitHub push','Creates repositories and pushes projects automatically.',7],['Figma to code','Imports designs with their colours and text extracted.',7],['VS Code','Opens any project straight in the editor.',7],['Web search','Answers with live results from the web.',1],['Time and weather','Local time and forecast on request.',1]]},
+ {k:'Data',c:'#ffb08a',ic:'db',f:[['Long-term memory','Keeps context across sessions.',3],['SQLite','Local database for small apps.',8],['Supabase','Hosted Postgres, set up and tested.',8],['Firebase','Firestore with security rules, running a live contact form.',8]]},
+ {k:'Automation',c:'#f6f1ec',ic:'bolt',f:[['App control','Opens and closes a whitelist of Windows apps.',2],['Desktop files','Reads and creates files, never deletes them.',2],['Code runner','Writes and runs sites in a sandbox with a 30-second timeout.',6],['Project import','Copies existing folders in and detects the project type.',6],['One-click start','Launcher plus automatic start at boot.',2]]},
+ {k:'Craft',c:'#e6b9a6',ic:'pen',f:[['Design languages','Nine styles, from glassmorphism to spatial UI.',7],['3D and motion','CSS transitions, 3D transforms and Three.js.',7],['Web security','HTTPS, auth, WAF, backups, protected forms and monitoring.',7]]}
+];
+const ALL=T.flatMap(t=>t.f.map(f=>({n:f[0],d:f[1],s:f[2],t})));
+$('#sCap').textContent=ALL.length;$('#sInt').textContent=T[1].f.length;$('#sDb').textContent=T[2].f.length-1;
+const CUM=ST.map((_,i)=>ALL.filter(a=>a.s<=i+1).length);
+
+/* hero art */
+const DEF={name:'Shepherd Addo Anokye',age:'29',role:'Dashboard specialist, full-stack developer, AI builder and trader',mail:'shepherdanoche5@gmail.com',tz:'Africa/Conakry'};
+let prof={...DEF},photo='',busy=false;
+try{['profile','photo','busy'].forEach(k=>localStorage.removeItem('addo.'+k))}catch(e){}
+const okPhoto=v=>v==='none'||(typeof v==='string'&&v.startsWith('/_blob/'))?v:'';
+const pickProf=d=>{const o={...DEF};for(const k of Object.keys(DEF))if(typeof d[k]==='string'&&d[k].trim())o[k]=d[k].slice(0,160);return o};
+const orb=`<svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><radialGradient id="hg" cx="36%" cy="30%" r="72%"><stop offset="0" stop-color="#ffe0c4"/><stop offset=".4" stop-color="#ff7a2e"/><stop offset=".8" stop-color="#9c3208"/><stop offset="1" stop-color="#3d1404"/></radialGradient><radialGradient id="glow"><stop offset="0" stop-color="#ff6b1f" stop-opacity=".55"/><stop offset="1" stop-color="#ff6b1f" stop-opacity="0"/></radialGradient></defs>
+<circle cx="200" cy="200" r="190" fill="url(#glow)"/>${[90,130,170,210].map(r=>`<circle cx="200" cy="200" r="${r}" fill="none" stroke="#fff" stroke-opacity=".09"/>`).join('')}
+<ellipse cx="200" cy="330" rx="90" ry="14" fill="#000" opacity=".35"/><circle cx="200" cy="200" r="104" fill="url(#hg)"/><ellipse cx="168" cy="152" rx="34" ry="18" fill="#fff" opacity=".28" transform="rotate(-24 168 152)"/>
+<text x="200" y="232" text-anchor="middle" font-family="Lexend,system-ui,sans-serif" font-weight="500" font-size="96" fill="#fff" fill-opacity=".9">A</text>
+<g class="orbit"><ellipse cx="200" cy="200" rx="160" ry="44" fill="none" stroke="#f2d74e" stroke-opacity=".55" stroke-width="1.5" transform="rotate(-16 200 200)"/><circle cx="352" cy="158" r="7" fill="#f2d74e"/><circle cx="52" cy="244" r="5" fill="#fff"/></g></svg>`;
+const applyProf=()=>{
+ $('#pName').textContent=prof.name||'Shepherd Addo Anokye';$('#pAge').textContent=prof.age||'29';$('#pRole').textContent=prof.role||'';$('#pMail').textContent=prof.mail||'shepherdanoche5@gmail.com';$('#mailLink').href='mailto:'+(prof.mail||'shepherdanoche5@gmail.com');
+ const a=$('#art');a.innerHTML='';a.classList.remove('photo');const av=$('#avBtn');av.innerHTML='';
+ const src=photo==='none'?'':(photo||'me.jpg'),asrc=photo==='none'?'':(photo||'avatar.jpg');
+ if(src){const im=new Image();im.src=src;im.alt=prof.name||'Shepherd Addo Anokye';if(!photo)im.style.objectPosition='58% 28%';a.appendChild(im);a.classList.add('photo');const im2=new Image();im2.src=asrc;im2.alt='';if(photo)im2.style.objectPosition='50% 25%';av.appendChild(im2)}
+ else{a.innerHTML=orb;{const w=(prof.name||'Shepherd Addo Anokye').trim().split(/\s+/);av.textContent=(w[0].charAt(0)+(w.length>1?w[w.length-1].charAt(0):'')).toUpperCase()}}
+ tick();
+};
+const tick=()=>{const o={hour:'2-digit',minute:'2-digit'};let s;try{s=new Intl.DateTimeFormat('en-GB',{...o,timeZone:prof.tz||undefined}).format(new Date())}catch(e){s=new Intl.DateTimeFormat('en-GB',o).format(new Date())}$('#clock').textContent=s};
+const clockT=setInterval(tick,20000);
+
+/* line chart */
+const lc=$('#lc');
+const draw=()=>{const W=lc.clientWidth,H=lc.clientHeight;if(!W)return;const l=28,r=22,t=30,b=24,n=CUM.length,mx=24;
+ const x=i=>l+i*(W-l-r)/(n-1),y=v=>t+(1-v/mx)*(H-t-b);const P=CUM.map((v,i)=>[x(i),y(v)]);
+ let d=`M${P[0][0]},${P[0][1]}`;for(let i=0;i<n-1;i++){const p0=P[i-1]||P[i],p1=P[i],p2=P[i+1],p3=P[i+2]||p2;d+=` C${p1[0]+(p2[0]-p0[0])/6},${p1[1]+(p2[1]-p0[1])/6} ${p2[0]-(p3[0]-p1[0])/6},${p2[1]-(p3[1]-p1[1])/6} ${p2[0]},${p2[1]}`}
+ const last=P[n-1],narrow=W<420;
+ lc.innerHTML=`<defs><linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2d74e" stop-opacity=".28"/><stop offset="1" stop-color="#f2d74e" stop-opacity="0"/></linearGradient></defs>
+ ${[0,8,16,24].map(v=>`<line x1="${l}" x2="${W-r}" y1="${y(v)}" y2="${y(v)}" stroke="#fff" stroke-opacity=".07"/><text x="${l-8}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join('')}
+ <rect x="${last[0]-12}" y="${last[1]}" width="24" height="${H-b-last[1]}" rx="12" fill="#fff" fill-opacity=".13"/>
+ <path d="${d} L${last[0]},${H-b} L${P[0][0]},${H-b}Z" fill="url(#ar)"/>
+ <path d="${d}" fill="none" stroke="#f2d74e" stroke-width="2.5"/>
+ ${P.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="${i===n-1?5:3}" fill="${i===n-1?'#f2d74e':'#1d1612'}" stroke="#f2d74e" stroke-width="1.5"/>`).join('')}
+ <rect x="${last[0]-17}" y="${last[1]-28}" width="34" height="20" rx="10" fill="#0c0908"/><text x="${last[0]}" y="${last[1]-14}" text-anchor="middle" style="fill:#fff;font-weight:500">${CUM[n-1]}</text>
+ ${SS.map((s,i)=>narrow&&![0,2,4,n-1].includes(i)?'':`<text x="${x(i)}" y="${H-4}" text-anchor="${i===0?'start':i===n-1?'end':'middle'}">${s}</text>`).join('')}`;
+};
+const ro=new ResizeObserver(draw);ro.observe(lc);
+
+/* table */
+$('#filt').innerHTML='<option value="">All disciplines</option>'+T.map(t=>`<option>${t.k}</option>`).join('');
+const rows=()=>{const f=$('#filt').value;$('#rows').innerHTML=ALL.filter(a=>!f||a.t.k===f).sort((a,b)=>a.s-b.s).map(a=>`<tr id="cap-${a.n.replace(/\W+/g,'-').toLowerCase()}"><td><div class="cap"><span class="th" style="background:${a.t.c}"><svg class="i"><use href="#i-${a.t.ic}"/></svg></span><div><b>${a.n}</b><small><i style="background:${a.t.c}"></i>${a.t.k}</small></div></div></td><td class="hide-s desc">${a.d}</td><td class="stg"><b>Stage ${a.s}</b><br>${ST[a.s-1]}</td><td class="hide-s"><div class="track">${ST.map((_,i)=>`<i class="${i+1===a.s?'on':i+1<a.s?'p':''}"></i>`).join('')}</div></td></tr>`).join('')};
+$('#filt').addEventListener('change',rows);rows();
+
+/* services */
+const S=[['Dashboards, my specialty','home','Professional dashboards for businesses and traders: KPIs, live charts, trackers, admin panels and secure owner sign-in, in glass, neon or clean styles.',['KPIs','Live charts','Admin panels','Secure sign-in'],'Three built so far: Addo.corp Glass, Neon and Studio.'],['Websites','web','Fast, responsive sites with motion where it helps, in the design language that fits the brand.',['HTML, CSS, JS','Three.js','Figma import']],['Web apps','layers','Accounts, data and real workflows on a Python back end that can grow.',['Python','Flask','REST APIs']],['AI agents','voice','Chat, voice and vision assistants that use tools, remember context and act.',['Claude API','Voice','Vision','Memory']],['Databases and back ends','db','The right store for the job, secured with proper rules.',['SQLite','Supabase','Firebase']],['Mobile-ready apps','phone','Touch-first web apps that work on any phone.',['Responsive','PWA'],'Native iOS and Android apps are on the roadmap.']];
+$('#svc').innerHTML=S.map((s,i)=>`<article class="card"><span class="th" style="background:${['#ff6b1f','#f2d74e','#ffb08a','#ff6b1f','#f6f1ec','#e6b9a6'][i]}"><svg class="i"><use href="#i-${s[1]}"/></svg></span><h3>${s[0]}</h3><p>${s[2]}</p>${s[4]?`<p class="later">${s[4]}</p>`:''}<ul class="tags">${s[3].map(x=>`<li>${x}</li>`).join('')}</ul></article>`).join('');
+
+/* trading */
+const MK=[{n:'Prediction markets',p:['Polymarket','Kalshi'],d:'Event contracts, including short-term crypto up-or-down markets read from the chart.'},{n:'Stocks',p:['Wealthsimple'],d:'Fractional shares in companies like NVIDIA.'},{n:'New platforms',p:['TradeFox','OG.com'],d:'Following the newer prediction-market platforms as they launch.'}];
+$('#mk').innerHTML=MK.map(m=>`<div><b>${m.n}</b><p>${m.d}</p><ul class="tags">${m.p.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');
+const SAMPLE=[['2026-11-03','BTC up in the next hour','Polymarket','Yes',20,14],['2026-11-07','Fed holds rates in December','Kalshi','Yes',25,9],['2026-11-12','NVIDIA fractional share','Wealthsimple','Buy',50,-6],['2026-11-18','ETH above daily open at close','Polymarket','No',15,-15],['2026-11-22','BTC up in the next hour','Polymarket','Yes',20,11]].map(r=>({d:r[0],m:r[1],p:r[2],s:r[3],k:r[4],v:r[5],x:1}));
+let J=store.get('journal',null)||SAMPLE;
+const money=v=>(v<0?'−':'+')+'$'+Math.abs(v).toFixed(2);
+const eq=$('#eq');
+const drawEq=()=>{const W=eq.clientWidth,H=eq.clientHeight;if(!W)return;const L=[...J].sort((a,b)=>a.d<b.d?-1:1);let c=0;const pts=[0,...L.map(t=>c+=t.v)];
+ if(L.length<1){eq.innerHTML=`<text x="${W/2}" y="${H/2}" text-anchor="middle">Log a trade to start the curve</text>`;return}
+ const lo=Math.min(0,...pts),hi=Math.max(0,...pts),sp=hi-lo||1,l=8,r=56,t=12,b=12;const x=i=>l+i*(W-l-r)/Math.max(1,pts.length-1),y=v=>t+(hi-v)/sp*(H-t-b);
+ const d=pts.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(''),end=pts[pts.length-1],col=end>=0?'#8ce3ad':'#ff9b85';
+ eq.innerHTML=`<line x1="${l}" x2="${W-r}" y1="${y(0)}" y2="${y(0)}" stroke="#fff" stroke-opacity=".18" stroke-dasharray="3 4"/><text x="${W-r+8}" y="${y(0)+4}">$0</text>
+ <path d="${d}L${x(pts.length-1)},${y(0)}L${x(0)},${y(0)}Z" fill="${col}" fill-opacity=".12"/><path d="${d}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>
+ <circle cx="${x(pts.length-1)}" cy="${y(end)}" r="4.5" fill="${col}"/><text x="${W-r+8}" y="${Math.min(H-4,Math.max(14,y(end)+4))}" style="fill:${col};font-weight:500">${money(end).replace('.00','')}</text>`};
+const eqRo=new ResizeObserver(drawEq);eqRo.observe(eq);
+const journal=()=>{const n=J.length,w=J.filter(t=>t.v>0).length,net=J.reduce((s,t)=>s+t.v,0),stk=J.reduce((s,t)=>s+t.k,0);
+ $('#jStats').innerHTML=`<div><b>${n}</b><span>Trades</span></div><div><b>${n?Math.round(w/n*100):0}%</b><span>Win rate</span></div><div><b class="${net>=0?'up':'dn'}">${money(net)}</b><span>Net result</span></div><div><b>${stk?(net/stk*100).toFixed(1):'0'}%</b><span>Return on stake</span></div>`;
+ $('#jRows').innerHTML=n?[...J].map((t,i)=>[t,i]).sort((a,b)=>a[0].d<b[0].d?1:-1).map(([t,i])=>`<tr><td>${esc(t.d)}</td><td>${esc(t.m)}${t.x?'<span class="smp">sample</span>':''}</td><td>${esc(t.p)}</td><td>${esc(t.s)}</td><td class="r">$${(+t.k).toFixed(2)}</td><td class="r ${t.v>=0?'up':'dn'}">${money(t.v)}</td><td><button class="del" type="button" data-del="${i}" aria-label="Delete trade"><svg class="i"><use href="#i-x"/></svg></button></td></tr>`).join(''):'<tr><td colspan="7">No trades yet. Log your first one above.</td></tr>';
+ const hasS=J.some(t=>t.x);$('#jClear').style.display=hasS?'':'none';$('#jNote').textContent=hasS?'Rows tagged sample are examples; clear them and log your own. Entries stay in this browser.':'Entries stay in this browser.';
+ store.set('journal',J);drawEq()};
+$('#jDate').value=new Date().toISOString().slice(0,10);
+$('#jForm').addEventListener('submit',e=>{e.preventDefault();const k=parseFloat($('#jStake').value),v=parseFloat($('#jPnl').value);if(!isFinite(k)||!isFinite(v)){toast('Enter a stake and a result');return}
+ J.push({d:$('#jDate').value,m:$('#jMarket').value.trim(),p:$('#jPlat').value,s:$('#jPos').value,k,v});$('#jMarket').value='';$('#jStake').value='';$('#jPnl').value='';journal();toast('Trade logged')});
+$('#jRows').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(b){J.splice(+b.dataset.del,1);journal();toast('Trade removed')}});
+$('#jClear').addEventListener('click',()=>{J=J.filter(t=>!t.x);journal();toast('Samples cleared')});
+journal();
+
+/* AI */
+const AI=[['Large language models','Builds on the Claude API, with system prompts that set design, style and security rules.'],['Tool-using agents','Gives a model real tools: web search, Gmail, Calendar, GitHub, Figma and VS Code.'],['Memory','Long-term memory so an agent keeps context from one session to the next.'],['Multimodal input','Vision on images, plus speech in and out behind a wake word.'],['Safe autonomy','App whitelists, no-delete file access, sandboxed code with a 30-second timeout.'],['Model choices','Weighed running models locally with Ollama against the cloud, and stays on Claude online for now.']];
+$('#comp').innerHTML=AI.map(a=>`<div><b>${a[0]}</b><p>${a[1]}</p></div>`).join('');
+const LY=[['Interface','Chat, voice, vision, live preview','#ffd9bd',70],['Tools','Search, Gmail, Calendar, GitHub, Figma, VS Code','#ffb08a',78],['Memory and data','Long-term memory, SQLite, Supabase, Firebase','#ff9257',86],['Model','Claude API with custom system prompts','#ff6b1f',94],['Guardrails','Login, Tailscale, whitelists, sandbox, no deletes','#f2d74e',100]];
+$('#layers').innerHTML=LY.map(l=>`<div style="background:${l[2]};width:${l[3]}%"><b>${l[0]}</b><span>${l[1]}</span></div>`).join('');
+
+/* views */
+const TITLES={overview:'Studio overview',services:'Services and ADDO',planner:'Plan a build','trading-ai':'Trading and AI',process:'Process and contact'};
+const show=v=>{if(!TITLES[v])v='overview';document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.dataset.view===v));document.querySelectorAll('.nb[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));$('#vTitle').textContent=TITLES[v];if(location.hash.slice(1)!==v)history.replaceState(null,'','#'+v);if(v==='overview')requestAnimationFrame(draw);if(v==='trading-ai')requestAnimationFrame(drawEq)};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-v],[data-go]');if(b){show(b.dataset.v||b.dataset.go);window.scrollTo(0,0)}});
+window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+$('#mailBtn').addEventListener('click',()=>show('process'));
+$('#toTable').addEventListener('click',()=>$('#tbl').scrollIntoView({behavior:'smooth'}));
+
+/* planner */
+const TY=[{id:'site',n:'Website',w:[1,2],s:['HTML, CSS, JS','Responsive layout']},{id:'webapp',n:'Web app',w:[3,5],s:['Python + Flask','REST API']},{id:'dash',n:'Dashboard',w:[2,4],s:['Charts','Live data feed']},{id:'agent',n:'AI agent',w:[4,7],s:['Claude API','Tools and memory']},{id:'mobile',n:'Mobile-ready app',w:[3,5],s:['PWA','Touch-first UI']}];
+const AD=[{id:'auth',n:'Login and accounts',w:.5,s:'Auth and sessions'},{id:'db',n:'Database',w:1,s:'Supabase or Firebase'},{id:'ai',n:'AI assistant inside',w:1.5,s:'Claude API'},{id:'voice',n:'Voice',w:1,s:'Speech in and out'},{id:'figma',n:'From a Figma design',w:.5,s:'Figma import'},{id:'motion',n:'3D and motion',w:1,s:'Three.js'},{id:'admin',n:'Admin dashboard',w:1,s:'Admin panel'},{id:'deploy',n:'Deploy and GitHub',w:.5,s:'GitHub, HTTPS hosting'}];
+const PH=[['Discover',.1],['Design',.2],['Build',.45],['Secure',.12],['Ship',.13]];
+const def={t:'webapp',a:['auth','db','deploy']};
+let P=store.get('plan',def);
+$('#types').innerHTML=TY.map(t=>`<label class="opt"><input type="radio" name="ty" id="ty-${t.id}" value="${t.id}"><span>${t.n}</span></label>`).join('');
+$('#addons').innerHTML=AD.map(a=>`<label class="opt"><input type="checkbox" id="ad-${a.id}" value="${a.id}"><span>${a.n}</span></label>`).join('');
+const fmt=n=>(Math.round(n*2)/2).toString();
+const plan=()=>{const t=TY.find(x=>x.id===P.t)||TY[1];const as=AD.filter(a=>P.a.includes(a.id));const add=as.reduce((s,a)=>s+a.w,0);const lo=t.w[0]+add*.8,hi=t.w[1]+add;
+ $('#rType').textContent=t.n+(as.length?` with ${as.length} add-on${as.length>1?'s':''}`:'');$('#rWeeks').textContent=`${fmt(lo)}–${fmt(hi)} wk`;
+ $('#phases').innerHTML=PH.map(p=>`<div style="flex-grow:${p[1]}"></div>`).join('');
+ $('#plegend').innerHTML=PH.map(p=>`<div>${p[0]} <b>${fmt(Math.max(.5,hi*p[1]))} wk</b></div>`).join('');
+ const st=[...t.s,...as.map(a=>a.s)];$('#rStack').textContent=st.join(', ');
+ document.querySelectorAll('#types input').forEach(i=>i.checked=i.value===t.id);document.querySelectorAll('#addons input').forEach(i=>i.checked=P.a.includes(i.value));
+ store.set('plan',P);return{t,as,lo,hi,st}};
+$('#pform').addEventListener('change',e=>{const i=e.target;if(i.name==='ty')P.t=i.value;else P.a=[...document.querySelectorAll('#addons input:checked')].map(x=>x.value);plan()});
+$('#reset').addEventListener('click',()=>{P={t:def.t,a:[...def.a]};plan();toast('Choices reset')});
+const copy=(txt,msg)=>{const no=()=>toast('Copy blocked here, select the text instead');try{navigator.clipboard.writeText(txt).then(()=>toast(msg),no)}catch(e){no()}};
+$('#copyBrief').addEventListener('click',()=>{const r=plan();copy(`Addo.corp project brief\nType: ${r.t.n}\nAdd-ons: ${r.as.map(a=>a.n).join(', ')||'none'}\nEstimate: ${fmt(r.lo)} to ${fmt(r.hi)} weeks\nStack: ${r.st.join(', ')}`,'Brief copied')});
+plan();
+document.addEventListener('click',e=>{const b=e.target.closest('[data-copy]');if(b)copy(b.dataset.copy,b.dataset.msg||'Copied')});
+$('#copyMail').addEventListener('click',()=>copy(prof.mail||'shepherdanoche5@gmail.com','Email copied'));
+
+/* overlays */
+const openOv=(id,f)=>{$(id).classList.add('open');setTimeout(()=>$(f).focus(),10)};
+const closeOv=()=>{document.querySelectorAll('.ov').forEach(o=>o.classList.remove('open'));$('#pop').classList.remove('open')};
+let pending=null;
+/* owner-only editing: the server only accepts writes from the owner; the password is a second lock */
+let db=null,user=null,assets=null,owner=false,uid=null;
+const profRef=()=>db.doc('site/profile'),authRef=()=>db.doc('data/users/'+uid+'/auth');
+const enc=new TextEncoder(),b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))),unb64=x=>Uint8Array.from(atob(x),c=>c.charCodeAt(0));
+const derive=async(p,salt,it)=>{const k=await crypto.subtle.importKey('raw',enc.encode(p),'PBKDF2',false,['deriveBits']);return b64(await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:it,hash:'SHA-256'},k,256))};
+const ss={get(k){try{return sessionStorage.getItem(k)}catch(e){return null}},set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}},del(k){try{sessionStorage.removeItem(k)}catch(e){}}};
+let unlockUntil=+(ss.get('addo.unlock')||0),fails=+(ss.get('addo.fails')||0),waitUntil=+(ss.get('addo.wait')||0);
+const isUnlocked=()=>Date.now()<unlockUntil;
+const setUnlocked=on=>{unlockUntil=on?Date.now()+30*60*1000:0;on?ss.set('addo.unlock',String(unlockUntil)):ss.del('addo.unlock')};
+let authMode='login',authStored=null,afterAuth=null;
+const authUI=()=>{const setup=authMode!=='login';$('#authTitle').textContent=authMode==='setup'?'Set up your sign-in':authMode==='change'?'Change password':'Sign in to edit';
+ $('#authMsg').textContent=authMode==='setup'?'Choose the email and password you will use to unlock profile editing. Use at least 8 characters.':authMode==='change'?'Enter a new password of at least 8 characters.':'Enter your email and password to change your profile.';
+ $('#aMailWrap').hidden=authMode==='change';$('#aConfWrap').hidden=!setup;$('#aForgot').hidden=setup;$('#aPass').autocomplete=setup?'new-password':'current-password';$('#aSubmit').textContent=authMode==='login'?'Sign in':'Save password';$('#aErr').textContent=''};
+const openAuth=async(mode,then)=>{if(!owner||!db||!uid){toast('Only the owner can edit this dashboard');return}afterAuth=then||null;
+ if(mode!=='change'){try{const snap=await authRef().get();authStored=snap.exists?snap.data():null}catch(e){toast('Sign-in is unavailable right now');return}mode=authStored&&authStored.hash?'login':'setup'}
+ authMode=mode;authUI();$('#aMail').value=authMode==='setup'?(prof.mail||''):'';$('#aPass').value='';$('#aConf').value='';closeOv();openOv('#authOv',authMode==='change'?'#aPass':'#aMail')};
+const requireUnlock=then=>{if(!owner)return;if(isUnlocked())then();else openAuth('login',then)};
+$('#authCancel').addEventListener('click',closeOv);
+$('#authForm').addEventListener('submit',async e=>{e.preventDefault();const err=m=>$('#aErr').textContent=m;const pass=$('#aPass').value,mail=$('#aMail').value.trim().toLowerCase();$('#aSubmit').disabled=true;
+ try{
+  if(authMode==='login'){
+   if(Date.now()<waitUntil){err(`Too many tries. Wait ${Math.ceil((waitUntil-Date.now())/1000)} seconds.`);return}
+   const h=await derive(pass,unb64(authStored.salt),authStored.iter||210000);
+   if(mail===String(authStored.email||'').toLowerCase()&&h===authStored.hash){fails=0;ss.del('addo.fails');setUnlocked(true);closeOv();toast('Unlocked for 30 minutes');const f=afterAuth;afterAuth=null;if(f)f()}
+   else{fails++;ss.set('addo.fails',String(fails));if(fails>=5){fails=0;ss.del('addo.fails');waitUntil=Date.now()+60000;ss.set('addo.wait',String(waitUntil));err('Too many tries. Wait 60 seconds.')}else err('Email or password is incorrect.')}
+  }else{
+   if(authMode==='setup'&&!/^\S+@\S+\.\S+$/.test(mail)){err('Enter a valid email.');return}
+   if(pass.length<8){err('Use at least 8 characters.');return}
+   if(pass!==$('#aConf').value){err('The two passwords do not match.');return}
+   const salt=crypto.getRandomValues(new Uint8Array(16)),iter=210000,hash=await derive(pass,salt,iter);
+   const email=authMode==='change'?String(authStored.email||prof.mail).toLowerCase():mail;
+   await authRef().set({email,salt:b64(salt),hash,iter});authStored={email,salt:b64(salt),hash,iter};
+   setUnlocked(true);closeOv();toast(authMode==='change'?'Password changed':'Sign-in set up, editing unlocked');const f=afterAuth;afterAuth=null;if(f)f()}
+ }catch(x){err('Could not reach the server. Try again.')}finally{$('#aSubmit').disabled=false}});
+
+const fillProf=()=>{pending=null;$('#fName').value=prof.name;$('#fRole').value=prof.role;$('#fAge').value=prof.age||'';$('#fMail').value=prof.mail;$('#fTz').value=prof.tz;$('#fPhoto').value='';openOv('#profOv','#fName')};
+const editProf=()=>requireUnlock(fillProf);
+$('#gear').addEventListener('click',editProf);$('#avBtn').addEventListener('click',()=>{if(owner)editProf()});
+$('#profCancel').addEventListener('click',closeOv);
+$('#lockBtn').addEventListener('click',()=>{setUnlocked(false);closeOv();toast('Editing locked')});
+$('#chgPass').addEventListener('click',()=>requireUnlock(()=>openAuth('change',fillProf)));
+$('#fPhoto').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const im=new Image();const u=URL.createObjectURL(f);im.onload=()=>{const m=1200,k=Math.min(1,m/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>{pending=b;toast('Photo ready, save to apply')},'image/jpeg',.85)};im.onerror=()=>toast('That file could not be read as an image');im.src=u});
+$('#rmPhoto').addEventListener('click',()=>{pending='none';toast('The orb will show when you save')});
+$('#defPhoto').addEventListener('click',()=>{pending='';toast('Your portrait will show when you save')});
+const saveProfile=async()=>{await profRef().set({...prof,photo,busy})};
+$('#profForm').addEventListener('submit',e=>{e.preventDefault();requireUnlock(async()=>{const btn=$('#profSave');btn.disabled=true;const old={prof,photo};
+ try{let ph=photo;if(pending instanceof Blob){if(!assets)throw{code:'no_assets'};const r=await assets.upload(pending);ph='/_blob/'+r.id}else if(pending!==null)ph=pending;
+  prof={name:$('#fName').value.trim()||DEF.name,age:$('#fAge').value.trim(),role:$('#fRole').value.trim(),mail:$('#fMail').value.trim()||DEF.mail,tz:$('#fTz').value.trim()||DEF.tz};photo=ph;
+  await saveProfile();applyProf();closeOv();toast('Profile saved for every visitor')}
+ catch(x){prof=old.prof;photo=old.photo;applyProf();toast(x&&x.code==='no_assets'?'Photo uploads are unavailable here':'Could not save. Only the owner can edit.')}finally{btn.disabled=false}})});
+applyProf();
+
+const applyAvail=()=>{$('#avail').classList.toggle('busy',busy);$('#avail span').textContent=busy?'Booked, waitlist open':'Open to projects'};
+const toggleAvail=()=>requireUnlock(async()=>{busy=!busy;applyAvail();try{await saveProfile();toast(busy?'Marked as booked':'Marked as open to projects')}catch(x){busy=!busy;applyAvail();toast('Could not save. Only the owner can edit.')}});
+$('#avail').addEventListener('click',()=>{if(owner)toggleAvail()});applyAvail();
+
+(async()=>{try{if(!window.claude||!window.claude.use)return;
+ [user,db]=await Promise.all([claude.use('user'),claude.use('db')]);
+ if(db){const t=setTimeout(()=>{},10000);profRef().onSnapshot(sn=>{clearTimeout(t);if(sn.exists){const d=sn.data()||{};prof=pickProf(d);photo=okPhoto(d.photo);busy=!!d.busy;applyProf();applyAvail()}},()=>clearTimeout(t))}
+ owner=!!(user&&db&&await user.isOwner().catch(()=>false));
+ if(owner){uid=await user.id();if(!uid){owner=false;return}assets=await claude.use('assets');document.body.classList.add('owner');$('#avBtn').setAttribute('aria-label','Edit profile')}
+}catch(e){}})();
+$('#avBtn').setAttribute('aria-label','Profile photo');
+
+$('#popList').innerHTML=ST.slice(-3).reverse().map((s,i)=>`<li>${s}<small>Stage ${8-i}, ${CUM[7-i]} capabilities in total</small></li>`).join('');
+$('#bell').addEventListener('click',e=>{e.stopPropagation();const p=$('#pop'),r=$('#bell').getBoundingClientRect();const mob=innerWidth<=640;p.style.left=(mob?Math.max(10,r.left-200):r.right+12)+'px';p.style.top=(mob?r.top-230:r.top-120+scrollY)+'px';p.style.position=mob?'fixed':'absolute';p.classList.toggle('open')});
+document.addEventListener('click',e=>{if(!e.target.closest('#pop,#bell'))$('#pop').classList.remove('open')});
+
+const goCap=n=>()=>{show('overview');$('#filt').value='';rows();const el=document.getElementById('cap-'+n.replace(/\W+/g,'-').toLowerCase());if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.querySelectorAll('td').forEach(td=>{td.style.background='rgba(242,215,78,.18)';setTimeout(()=>td.style.background='',1600)})}};
+const C=[['Studio overview','View',()=>show('overview')],['Services and ADDO','View',()=>show('services')],['Plan a build','View',()=>show('planner')],['Trading and AI','View',()=>show('trading-ai')],['Log a trade','Action',()=>{show('trading-ai');setTimeout(()=>$('#jMarket').focus(),50)}],['Process and contact','View',()=>show('process')],['Toggle availability','Owner',toggleAvail,1],['Edit profile','Owner',()=>setTimeout(editProf,20),1],['Lock editing','Owner',()=>{setUnlocked(false);toast('Editing locked')},1],['Copy email','Action',()=>copy(prof.mail||'shepherdanoche5@gmail.com','Email copied')],['Copy project brief','Action',()=>$('#copyBrief').click()],...ALL.map(a=>[a.n,a.t.k,goCap(a.n)])];
+let cur=[],sel=0;
+const renderCmd=()=>{const q=$('#cmdIn').value.toLowerCase().trim();cur=C.filter(c=>(!c[3]||owner)&&(!q||(c[0]+' '+c[1]).toLowerCase().includes(q))).slice(0,10);sel=Math.min(sel,Math.max(0,cur.length-1));
+ $('#cmdList').innerHTML=cur.length?cur.map((c,k)=>`<li data-k="${k}" class="${k===sel?'act':''}">${esc(c[0])}<span>${esc(c[1])}</span></li>`).join(''):'<li>No match. Try “planner” or “voice”.</li>'};
+const run=k=>{const c=cur[k];if(!c)return;closeOv();c[2]()};
+const openCmd=()=>{$('#cmdIn').value='';sel=0;renderCmd();openOv('#cmdOv','#cmdIn')};
+$('#openCmd').addEventListener('click',openCmd);
+$('#cmdIn').addEventListener('input',()=>{sel=0;renderCmd()});
+$('#cmdList').addEventListener('click',e=>{const li=e.target.closest('li[data-k]');if(li)run(+li.dataset.k)});
+$('#cmdIn').addEventListener('keydown',e=>{if(e.key==='ArrowDown'){sel=Math.min(sel+1,cur.length-1);renderCmd();e.preventDefault()}else if(e.key==='ArrowUp'){sel=Math.max(sel-1,0);renderCmd();e.preventDefault()}else if(e.key==='Enter')run(sel)});
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeOv()}));
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCmd()}else if(e.key==='Escape')closeOv()});
+show(location.hash.slice(1)||'overview');
+}
+</script>
+</body>
+</html>
