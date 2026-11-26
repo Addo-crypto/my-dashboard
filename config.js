@@ -15,4 +15,4 @@ export const FIREBASE = {
 export const OWNER_EMAIL = "shepherdanoche5@gmail.com";
 
 // Web3Forms access key (free, from web3forms.com). Sends each message to your email.
-export const WEB3FORMS_KEY = "";
+export const WEB3FORMS_KEY = "887409f7-07dd-44cf-92c2-40f34acdd49b";
