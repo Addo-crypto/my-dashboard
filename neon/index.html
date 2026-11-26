@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Addo.corp Neon</title>
+<link rel="artifact-thumbnail" href="thumb.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Chakra+Petch:wght@500;600;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE occasion meets work: a cyberpunk game-studio front page that is also a working dashboard, after the user's reference
+   IDEA a neon HUD for Addo.corp: the founder stands in front of the company name, with live readouts docked around him
+   PICTURE the duotone cut-out portrait over a giant distressed ADDO.CORP, HUD stats bar across his chest
+   COLOUR near-black violet ground, neon pink #ff2e6e as the one signal, violet support, pale pink type
+   TYPE Anton for the giant word, Chakra Petch for HUD headings and labels, Exo 2 for text
+   LAYOUT fixed social rail left, nav top; hero columns flank the portrait; HUD panels with cut corners below; phone stacks word, portrait, columns, stats */
+:root{color-scheme:dark;--bg:#09060b;--ink:#f3e9ee;--mute:#a8909c;--pk:#ff2e6e;--pk2:#ff6f9c;--vi:#a66bff;--pale:#f6dbe6;--line:rgba(255,46,110,.32);--line2:rgba(255,255,255,.09);--panel:rgba(22,12,20,.72)}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:radial-gradient(60% 40% at 50% 18%,rgba(166,107,255,.14),transparent 70%),radial-gradient(40% 30% at 85% 60%,rgba(255,46,110,.08),transparent 70%),var(--bg);background-attachment:fixed;color:var(--ink);font:16px/1.6 "Exo 2",system-ui,sans-serif;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px);z-index:0}
+h1,h2,h3,.hd{font-family:"Chakra Petch",sans-serif;font-weight:600;line-height:1.08;margin:0;letter-spacing:.01em;text-wrap:balance}
+h2{font-size:clamp(30px,3.6vw,46px)}
+h3{font-size:20px}
+p{margin:0}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--pk);outline-offset:3px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.tag{font:600 12px/1.2 "Chakra Petch",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.pk{color:var(--pk)}
+/* rail + nav */
+.rail{position:fixed;left:0;top:0;bottom:0;width:64px;border-right:1px solid var(--line2);display:flex;flex-direction:column;align-items:center;gap:14px;padding:18px 0;z-index:30;background:rgba(9,6,11,.6);backdrop-filter:blur(8px)}
+.rail .vt{writing-mode:vertical-rl;transform:rotate(180deg);font:600 11px "Chakra Petch",sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--mute)}
+.ri{width:40px;height:40px;display:grid;place-items:center;border-radius:8px;color:var(--mute);text-decoration:none;border:0;background:none;cursor:pointer}
+.ri:hover{color:var(--pk);background:rgba(255,46,110,.08)}
+.rail .sp{flex:1}
+.rail .line{width:1px;height:70px;background:linear-gradient(var(--mute),transparent)}
+.rail .dot{width:8px;height:8px;border-radius:50%;background:var(--pk);box-shadow:0 0 10px var(--pk)}
+main,nav.top{margin-left:64px;position:relative;z-index:1}
+nav.top{position:sticky;top:0;z-index:20;background:rgba(9,6,11,.78);backdrop-filter:blur(10px);border-bottom:1px solid var(--line2)}
+nav.top .in{display:flex;align-items:center;gap:22px;padding:12px max(3vw,16px);max-width:1440px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 18px "Chakra Petch",sans-serif;letter-spacing:.08em}
+.logo svg{width:34px;height:34px}
+.links{display:flex;gap:4px;flex:1;justify-content:center;flex-wrap:wrap}
+.links a{font:600 13px "Chakra Petch",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);text-decoration:none;padding:10px 12px;position:relative}
+.links a:hover,.links a.on{color:var(--ink)}
+.links a.on::after{content:"";position:absolute;left:12px;right:12px;bottom:4px;height:2px;background:var(--pk);box-shadow:0 0 8px var(--pk)}
+.ib{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line2);background:none;border-radius:8px;cursor:pointer;color:var(--ink)}
+.ib:hover{border-color:var(--pk);color:var(--pk)}
+.cta{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 20px;background:var(--pk);color:#14060d;border:0;border-radius:8px;font:700 13px "Chakra Petch",sans-serif;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;box-shadow:0 0 22px rgba(255,46,110,.45)}
+.cta:hover{background:#ff5287}
+.ghost{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 18px;border:1px solid var(--line);background:rgba(255,46,110,.05);color:var(--ink);font:600 13px "Chakra Petch",sans-serif;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.ghost:hover{background:rgba(255,46,110,.16);border-color:var(--pk)}
+.slash{display:inline-block;width:34px;height:10px;background:repeating-linear-gradient(115deg,var(--pk) 0 3px,transparent 3px 7px);opacity:.8}
+.own{display:none!important}
+body.owner .own{display:grid!important}
+/* hero */
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(3vw,16px);padding-right:max(3vw,16px)}
+.hero{position:relative;min-height:clamp(660px,calc(100svh - 70px),900px);overflow:hidden}
+.hero .tl{position:absolute;top:22px;left:max(3vw,16px);z-index:3}
+.hero .tr{position:absolute;top:22px;right:max(3vw,16px);z-index:3;text-align:right;display:flex;gap:14px;align-items:flex-start}
+.tr b{font:700 18px "Chakra Petch",sans-serif;color:var(--pk)}
+.tr .bars{display:flex;gap:3px;margin-top:6px;justify-content:flex-end}
+.tr .bars i{width:10px;height:3px;background:var(--mute)}
+.tr .bars i:first-child{background:var(--pk)}
+.giant{position:absolute;left:0;right:0;top:56px;z-index:1;text-align:center;font:400 clamp(84px,15.6vw,250px)/.9 Anton,Impact,sans-serif;letter-spacing:.02em;white-space:nowrap;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .08 0 0 0 0 .03 0 0 0 0 .07 0 0 0 2.2 -1.15'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),linear-gradient(180deg,#fbe4ee,#dcaec2);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none}
+.halo{position:absolute;left:50%;bottom:4%;width:min(760px,70%);aspect-ratio:1;transform:translateX(-50%);background:radial-gradient(circle,rgba(255,46,110,.32),rgba(166,107,255,.12) 45%,transparent 68%);z-index:1}
+.rings{position:absolute;left:50%;bottom:8%;width:min(620px,60%);aspect-ratio:1;transform:translateX(-50%);z-index:1;border-radius:50%;border:1px solid rgba(255,46,110,.16);box-shadow:inset 0 0 0 60px transparent,0 0 0 60px rgba(255,46,110,.03)}
+.me{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:82%;z-index:2;pointer-events:none}
+.me img{height:100%;width:auto;display:block;filter:drop-shadow(0 0 28px rgba(255,46,110,.35))}
+.col{position:absolute;top:42%;width:min(29%,350px);z-index:3}
+.col.l{left:max(3vw,16px)}.col.r{right:max(3vw,16px)}
+.col h1,.col h2{font-size:clamp(24px,2.3vw,32px);color:var(--pk);text-shadow:0 0 18px rgba(255,46,110,.45);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 12px}
+.col p{color:#d9c6cf;font-size:15px}
+.col .meta{margin-top:10px;font-size:14px;color:var(--mute)}
+.col .meta b{color:var(--ink);font-weight:500}
+.col .acts{margin-top:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hud{position:absolute;left:max(3vw,16px);right:max(3vw,16px);bottom:22px;z-index:4;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) 76px;gap:0;align-items:center;border:1px solid var(--line);background:rgba(14,8,14,.62);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px)}
+.hud>div{display:flex;align-items:center;gap:14px;padding:16px 20px;border-right:1px solid var(--line2)}
+.hud .k{font:600 12px/1.2 "Chakra Petch",sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.hud .v{font:700 clamp(30px,3vw,40px)/1 "Chakra Petch",sans-serif;color:var(--pk);text-shadow:0 0 14px rgba(255,46,110,.5);white-space:nowrap}
+.hud .v small{display:block;font-size:11px;letter-spacing:.2em;color:var(--mute);text-shadow:none;margin-top:4px}
+.hud .d{font-size:13px;color:var(--mute);line-height:1.4}
+.radar{width:64px;height:64px;flex:none}
+.sweep{transform-origin:32px 32px;animation:sw 4s linear infinite}
+@keyframes sw{to{transform:rotate(360deg)}}
+.avr{width:58px;height:58px;border-radius:50%;border:2px solid var(--pk);overflow:hidden;flex:none;box-shadow:0 0 14px rgba(255,46,110,.5)}
+.avr img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)}
+.stat{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;border:1px solid var(--line2);border-radius:99px;background:none;font-size:13px;cursor:default}
+body.owner .stat{cursor:pointer}
+.stat i{width:8px;height:8px;border-radius:50%;background:#5ef2b0;box-shadow:0 0 8px #5ef2b0}
+.stat.busy i{background:var(--pk);box-shadow:0 0 8px var(--pk)}
+.go{width:56px;height:56px;margin:0 auto;border-radius:50%;display:grid;place-items:center;border:1px solid var(--pk);color:var(--ink);text-decoration:none;box-shadow:0 0 0 6px rgba(255,46,110,.08),0 0 18px rgba(255,46,110,.4)}
+.go:hover{background:var(--pk);color:#14060d}
+/* panels */
+section.band{padding-block:clamp(36px,5vw,72px)}
+.sh{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.sh p{color:var(--mute);max-width:56ch}
+.sh .tag{display:block;margin-bottom:8px;color:var(--pk)}
+.pnl{position:relative;border:1px solid var(--line2);background:var(--panel);padding:clamp(16px,2vw,24px);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.pnl::before{content:"";position:absolute;left:0;top:0;width:34px;height:34px;border-left:2px solid var(--pk);border-top:2px solid var(--pk);clip-path:polygon(0 0,100% 0,100% 2px,2px 2px,2px 100%,0 100%);pointer-events:none}
+.g2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px}
+.fig{position:relative;height:240px;margin-top:10px}
+.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.fig text{fill:var(--mute);font:12px "Exo 2",sans-serif}
+.big{font:700 clamp(40px,4vw,56px)/1 "Chakra Petch",sans-serif;color:var(--pk);text-shadow:0 0 18px rgba(255,46,110,.45);margin:12px 0 8px}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:3px 10px;border:1px solid rgba(94,242,176,.4);color:#8af5c6;border-radius:99px}
+.thead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+select{min-height:44px;border:1px solid var(--line);background:#160b13;padding:0 36px 0 14px;font-size:16px;border-radius:8px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ff2e6e' fill='none' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:separate;border-spacing:0 6px}
+th{text-align:left;font:600 12px "Chakra Petch",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);padding:0 12px 8px;border-bottom:1px solid var(--line2)}
+td{background:rgba(255,255,255,.035);padding:10px 12px;font-size:14px;vertical-align:middle;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+td:first-child{border-left:2px solid var(--pk)}
+.cap{display:flex;align-items:center;gap:12px}
+.th{width:44px;height:44px;display:grid;place-items:center;flex:none;color:#14060d;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.cap b{display:block;font-weight:600}
+.cap small{font-size:12px;color:var(--mute)}
+.desc{color:#d9c6cf;max-width:40ch}
+.stg{white-space:nowrap;color:var(--mute)}
+.stg b{color:var(--ink);font-weight:500}
+.track{display:flex;gap:4px}
+.track i{width:10px;height:4px;background:rgba(255,255,255,.12)}
+.track i.p{background:rgba(255,46,110,.45)}
+.track i.on{background:var(--pk);box-shadow:0 0 8px var(--pk)}
+.svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.svc .pnl{display:flex;flex-direction:column;gap:10px}
+.svc p{color:#d9c6cf;font-size:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:auto 0 0}
+.tags li{font-size:12px;padding:3px 10px;border:1px solid var(--line);color:var(--pale);border-radius:4px}
+.later{font-size:13px;color:var(--pk2)}
+.lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.lists ul{margin:8px 0 0;padding-left:18px;color:#d9c6cf;font-size:15px}
+.mk{display:grid;gap:10px;margin:14px 0 18px}
+.mk div{padding:14px;border:1px solid var(--line2);background:rgba(255,255,255,.025)}
+.mk b{font-weight:600;display:block}
+.mk p{font-size:14px;color:#d9c6cf;margin-top:4px}
+.mk .tags{margin-top:10px}
+.meth{margin:8px 0 0;padding-left:18px;color:#d9c6cf;font-size:14px}
+.jstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.jstats b{display:block;font:700 clamp(22px,2.4vw,30px)/1.1 "Chakra Petch",sans-serif;white-space:nowrap}
+.jstats span{font-size:12px;color:var(--mute)}
+.up{color:#5ef2b0}.dn{color:#ff6b88}
+.fig.eq{height:150px;margin:8px 0 12px}
+.jform{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:6px}
+.jform input,.jform select,.form input{min-height:44px;font-size:16px;border:1px solid var(--line2);background:rgba(255,255,255,.04);padding:0 12px;color:var(--ink);border-radius:6px}
+.jform select{background-color:#160b13;padding-right:32px}
+.jt td{font-size:13px;padding:8px 10px;white-space:nowrap}
+.jt td:nth-child(2){white-space:normal;min-width:140px}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.smp{font-size:11px;padding:1px 7px;border:1px solid var(--line);color:var(--pk2);margin-left:6px;border-radius:3px}
+.del{width:32px;height:32px;border:0;background:none;color:var(--mute);cursor:pointer;display:grid;place-items:center}
+.del:hover{color:var(--pk)}
+.note{font-size:13px;color:var(--mute);margin-top:10px}
+.comp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.comp div{padding:14px;border:1px solid var(--line2);background:rgba(255,255,255,.025)}
+.comp b{display:block;font-weight:600}
+.comp p{font-size:14px;color:#d9c6cf;margin-top:4px}
+.layers{display:grid;gap:6px;margin-top:12px;justify-items:center}
+.layers div{padding:12px 16px;color:#14060d;text-align:center;width:100%;clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,10px 100%,0 50%)}
+.layers b{display:block;font:700 15px "Chakra Petch",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.layers span{font-size:13px}
+.plan{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+fieldset{border:0;padding:0;margin:0 0 20px}
+legend{font:600 13px "Chakra Petch",sans-serif;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;color:var(--mute)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--line2);font-size:14px;background:rgba(255,255,255,.03)}
+.opt input:checked+span{border-color:var(--pk);background:rgba(255,46,110,.16);color:#fff;box-shadow:inset 0 0 12px rgba(255,46,110,.25)}
+.opt input:focus-visible+span{outline:2px solid var(--pk);outline-offset:2px}
+.weeks{font:700 clamp(52px,6vw,78px)/1 "Chakra Petch",sans-serif;color:var(--pk);text-shadow:0 0 22px rgba(255,46,110,.5);white-space:nowrap;margin:8px 0}
+.phases{display:flex;height:16px;gap:3px;margin:18px 0 10px}
+.phases div{background:var(--pk);transition:flex-grow .3s;box-shadow:0 0 10px rgba(255,46,110,.4)}
+.phases div:nth-child(even){background:var(--vi);box-shadow:none}
+.plegend{display:grid;grid-template-columns:repeat(auto-fit,minmax(7em,1fr));gap:6px 12px;font-size:13px;color:var(--mute)}
+.plegend b{color:var(--ink);font-weight:500;white-space:nowrap}
+.route{list-style:none;margin:0 0 16px;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;counter-reset:r}
+.route li{counter-increment:r;padding:16px;border:1px solid var(--line2);background:rgba(255,255,255,.025);position:relative}
+.route li::before{content:counter(r,decimal-leading-zero);display:block;font:700 26px "Chakra Petch",sans-serif;color:var(--pk);text-shadow:0 0 12px rgba(255,46,110,.5);margin-bottom:8px}
+.route b{display:block;font:600 17px "Chakra Petch",sans-serif;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+.route span{font-size:14px;color:#d9c6cf}
+.mailp{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;border-color:var(--line);background:linear-gradient(110deg,rgba(255,46,110,.22),rgba(166,107,255,.1) 60%,rgba(22,12,20,.7))}
+.mailp h2{max-width:18ch}
+.mail{font:600 clamp(20px,2.4vw,28px) "Chakra Petch",sans-serif;overflow-wrap:anywhere}
+.connect{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.soc{display:flex;flex-direction:column;gap:14px;align-items:stretch}
+.sh2{display:flex;align-items:center;gap:12px}
+.sh2 b{display:block;font:600 17px "Chakra Petch",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.sh2 div span{font-size:14px;color:var(--mute);overflow-wrap:anywhere}
+.qrw{background:#fff;padding:12px;width:min(210px,100%);align-self:center;box-shadow:0 0 0 1px var(--pk),0 0 24px rgba(255,46,110,.35)}
+.qr{display:block;width:100%;height:auto}
+.soc .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:auto}
+footer{border-top:1px solid var(--line2);padding:22px 0;color:var(--mute);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+/* overlays */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(5,3,6,.72);backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 16px}
+.ov.open{display:flex}
+.box{width:min(540px,100%);background:#140a12;border:1px solid var(--line);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.box>input{width:100%;font-size:16px;padding:16px 18px;border:0;border-bottom:1px solid var(--line2);background:none}
+.cmds{list-style:none;margin:0;padding:6px;max-height:50vh;overflow:auto}
+.cmds li{padding:11px 12px;cursor:pointer;display:flex;justify-content:space-between;gap:12px}
+.cmds li span{color:var(--mute);font-size:13px}
+.cmds li.act{background:rgba(255,46,110,.12)}
+.form{padding:22px;display:grid;gap:12px}
+.form label{display:grid;gap:4px;font-size:13px;color:var(--mute)}
+.row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.err{color:#ff6b88;font-size:14px}
+.err:empty{display:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--pk);color:#14060d;padding:10px 18px;font:600 14px "Chakra Petch",sans-serif;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60}
+.toast.show{opacity:1}
+@media(max-width:1100px){.svc{grid-template-columns:repeat(2,minmax(0,1fr))}.route{grid-template-columns:repeat(3,minmax(0,1fr))}.g2,.plan{grid-template-columns:minmax(0,1fr)}.connect{grid-template-columns:repeat(2,minmax(0,1fr))}.links a{padding:10px 8px;letter-spacing:.08em}}
+@media(max-width:960px){
+.links{display:none}
+.hero{min-height:0;overflow:visible;padding-bottom:18px}
+.hero .tl,.hero .tr{position:static}
+.hero .tr{display:none}
+.hero .tl{padding-top:18px}
+.giant{position:relative;top:auto;margin-top:12px;font-size:16.5vw}
+.halo,.rings{bottom:auto;top:90px}
+.me{position:relative;left:auto;transform:none;height:auto;margin:-7vw auto 0;width:min(520px,94%)}
+.me img{width:100%;height:auto}
+.col{position:static;width:auto;margin-top:22px}
+.hud{position:relative;bottom:auto;left:auto;right:auto;margin-top:28px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.hud>div{border-bottom:1px solid var(--line2)}
+.hud .gocell{display:none!important}
+}
+@media(max-width:640px){
+.rail{display:none}
+main,nav.top{margin-left:0}
+nav.top .cta{display:none}
+.hud{grid-template-columns:minmax(0,1fr)}
+.svc,.lists,.comp,.route,.connect{grid-template-columns:minmax(0,1fr)}
+.jstats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.hide-s{display:none}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sweep{animation:none}.phases div{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-menu" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></symbol>
+ <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+ <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+ <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></symbol>
+ <symbol id="i-mail" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M5 8l7 5 7-5"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M5 19l1.2-3.6A7.5 7.5 0 1112 19.5a7.6 7.6 0 01-3.4-.8L5 19z"/></symbol>
+ <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0111 0M16 5.5a3 3 0 010 5.5M18 14.5a5 5 0 012.5 4.5"/></symbol>
+ <symbol id="i-camera" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.5"/><path d="M16.5 7.5h.01"/></symbol>
+ <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+ <symbol id="i-voice" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0012 0M12 17v4"/></symbol>
+ <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 01-10 0V8zM12 16v5"/></symbol>
+ <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></symbol>
+ <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/></symbol>
+ <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 6l3 3"/></symbol>
+ <symbol id="i-web" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 7h.01M10 7h.01"/></symbol>
+ <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4 8-4z"/><path d="M4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
+ <symbol id="i-chart" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 15v-4M12 15V9M15 15v-2"/></symbol>
+ <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></symbol>
+</svg>
+
+<aside class="rail" aria-label="Social links">
+ <button class="ri" id="railMenu" type="button" aria-label="Open search"><svg class="i"><use href="#i-menu"/></svg></button>
+ <span class="vt">Follow me</span>
+ <a class="ri" href="https://wa.me/224666749191" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="i"><use href="#i-chat"/></svg></a>
+ <a class="ri" href="https://www.facebook.com/share/1E1HHpbr5i/" target="_blank" rel="noopener" aria-label="Facebook"><svg class="i"><use href="#i-people"/></svg></a>
+ <a class="ri" href="https://www.instagram.com/shepherdaddoanockye" target="_blank" rel="noopener" aria-label="Instagram"><svg class="i"><use href="#i-camera"/></svg></a>
+ <a class="ri" href="#contact" aria-label="Email"><svg class="i"><use href="#i-mail"/></svg></a>
+ <span class="sp"></span>
+ <span class="vt">Scroll down</span><span class="line"></span><span class="dot"></span>
+</aside>
+
+<nav class="top"><div class="in">
+ <a class="logo" href="#home"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M3 3h28v28H3z" fill="none" stroke="#ff2e6e" stroke-width="2"/><path d="M17 8l7.5 18h-4l-1.3-3.6h-4.4L13.5 26h-4L17 8zm0 7.6l-1.2 4h2.4l-1.2-4z" fill="#ff2e6e"/></svg>ADDO.CORP</a>
+ <div class="links" id="links"><a href="#home" class="on">Home</a><a href="#index">Capabilities</a><a href="#services">Services</a><a href="#trading">Trading and AI</a><a href="#planner">Planner</a><a href="#contact">Contact</a></div>
+ <button class="ib" id="openCmd" type="button" aria-label="Search (Ctrl K)"><svg class="i"><use href="#i-search"/></svg></button>
+ <button class="ib own" id="gear" type="button" aria-label="Edit profile"><svg class="i"><use href="#i-gear"/></svg></button>
+ <a class="cta" href="#contact">Hire me <svg class="i"><use href="#i-arrow"/></svg></a>
+</div></nav>
+
+<main>
+<section class="wrap hero" id="home">
+ <span class="tag tl">Founder-led studio, 5 years in computing and AI</span>
+ <div class="tr"><div><span class="tag">Where code</span><br><span class="tag">meets markets</span></div><div><b>01</b><div class="bars"><i></i><i></i><i></i></div></div></div>
+ <div class="giant" aria-hidden="true">ADDO.CORP</div>
+ <div class="halo"></div><div class="rings"></div>
+ <div class="me"><img src="hero.webp" alt="Portrait of Shepherd Addo Anokye" width="760" height="780"></div>
+ <div class="col l">
+  <span class="tag">Founder</span>
+  <h1 id="pName">Shepherd Addo Anokye</h1>
+  <p id="pRole">Dashboard specialist, full-stack developer, AI builder and trader</p>
+  <p class="meta"><span id="pAge">29</span> years old, 5 years of experience<br>Studio time <b id="clock">--:--</b></p>
+  <div class="acts"><a class="ghost" href="#planner">Start a project</a><span class="slash"></span></div>
+ </div>
+ <div class="col r">
+  <span class="tag">The future</span>
+  <h2>AI and markets</h2>
+  <p>I build AI agents that see, speak and act, and I trade prediction markets and stocks with chart analysis.</p>
+  <div class="acts"><a class="ghost" href="#trading"><svg class="i" style="width:16px;height:16px"><use href="#i-play"/></svg>Trading and AI</a></div>
+ </div>
+ <div class="hud">
+  <div><svg class="radar" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="none" stroke="#ff2e6e" stroke-opacity=".5"/><circle cx="32" cy="32" r="20" fill="none" stroke="#ff2e6e" stroke-opacity=".35"/><circle cx="32" cy="32" r="10" fill="none" stroke="#ff2e6e" stroke-opacity=".3"/><path d="M2 32h60M32 2v60" stroke="#ff2e6e" stroke-opacity=".25"/><g class="sweep"><path d="M32 32L32 2A30 30 0 0154 12z" fill="#ff2e6e" fill-opacity=".3"/></g><circle cx="44" cy="22" r="2.5" fill="#ff2e6e"/><circle cx="22" cy="40" r="2" fill="#fff"/></svg>
+   <span class="k">Capabilities<br>shipped</span><span class="v">+<span id="sCap">24</span><small>In ADDO</small></span></div>
+  <div><span class="k">Experience</span><span class="v">+5<small>Years</small></span><span class="d hide-s"><span id="sInt">6</span> integrations, <span id="sDb">3</span> databases live</span></div>
+  <div><span class="avr"><img src="avatar.jpg" alt=""></span><span><span class="k">Status</span><br><button class="stat" id="avail" type="button"><i></i><span>Open to projects</span></button></span></div>
+  <div class="gocell" style="border:0;padding:0"><a class="go" href="#index" aria-label="Scroll to capabilities"><svg class="i"><use href="#i-down"/></svg></a></div>
+ </div>
+</section>
+
+<section class="wrap band" id="index">
+ <div class="sh"><div><span class="tag">Capabilities</span><h2>24 working capabilities in ADDO</h2></div><p>The AI agent built in-house: everything below runs today.</p></div>
+ <div class="g2">
+  <div class="pnl"><span class="tag">Growth by build stage</span><div class="fig"><svg id="lc" role="img" aria-label="Capabilities grew from 2 to 24 across 8 build stages"></svg></div></div>
+  <div class="pnl"><span class="tag">Latest build</span><div class="big">Stage 8</div><p>Databases: SQLite, Supabase and Firebase, all tested.</p><p style="margin-top:12px"><span class="live">Live</span> <span class="note">Firebase contact form</span></p>
+   <p class="note" style="margin-top:16px">Recent stages: <span id="recent"></span></p></div>
+ </div>
+ <div class="pnl" style="margin-top:16px">
+  <div class="thead"><h3>Capability index</h3><select id="filt" aria-label="Filter by discipline"></select></div>
+  <div class="scroll"><table><thead><tr><th>Capability</th><th class="hide-s">What it does</th><th>Built in</th><th class="hide-s">Stage</th></tr></thead><tbody id="rows"></tbody></table></div>
+ </div>
+</section>
+
+<section class="wrap band" id="services">
+ <div class="sh"><div><span class="tag">Services</span><h2>What I build for clients</h2></div><p>Every client project uses the same stack ADDO is built on.</p></div>
+ <div class="svc" id="svc"></div>
+ <div class="pnl" style="margin-top:16px">
+  <h3 style="font-size:24px">Flagship: ADDO, a Jarvis-style AI agent</h3>
+  <p style="margin-top:10px;color:#d9c6cf;max-width:75ch">A conversational agent in Python and Flask on the Claude API. It answers by voice to its wake word, reads images, works with Gmail and Calendar, writes and runs websites, pushes them to GitHub and stores data in SQLite, Supabase or Firebase. It runs privately on a Windows PC and is reachable from a phone over Tailscale.</p>
+  <div class="lists">
+   <div><span class="tag">Design languages</span><ul><li>Skeuomorphism, neomorphism</li><li>Glassmorphism, claymorphism, liquid glass</li><li>Minimalism, maximalism, brutalism</li><li>Spatial UI</li></ul></div>
+   <div><span class="tag">Security built in</span><ul><li>HTTPS and SSL, secure hosting and DNS</li><li>Authentication and private access</li><li>WAF, updates and monitoring</li><li>Backups, form and upload protection</li></ul></div>
+  </div>
+ </div>
+</section>
+
+<section class="wrap band" id="trading">
+ <div class="sh"><div><span class="tag">Trading and AI</span><h2>Reading markets, building AI</h2></div><p>Two skills that feed each other.</p></div>
+ <div class="g2" style="grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)">
+  <div class="pnl">
+   <span class="tag">Markets I trade</span>
+   <div class="mk" id="mk"></div>
+   <span class="tag">Method</span>
+   <ul class="meth"><li>Technical chart analysis for short-term crypto markets</li><li>Research across prediction-market platforms before taking a side</li><li>Fractional shares to keep stock positions small</li><li>Every position logged in the journal</li></ul>
+  </div>
+  <div class="pnl">
+   <div class="thead"><h3>Trade journal</h3><button class="ghost" type="button" id="jClear">Clear samples</button></div>
+   <div class="jstats" id="jStats"></div>
+   <div class="fig eq"><svg id="eq" role="img" aria-label="Running profit and loss"></svg></div>
+   <form class="jform" id="jForm">
+    <input id="jDate" type="date" aria-label="Date" required>
+    <input id="jMarket" type="text" placeholder="Market" aria-label="Market" required>
+    <select id="jPlat" aria-label="Platform"><option>Polymarket</option><option>Kalshi</option><option>Wealthsimple</option><option>Other</option></select>
+    <select id="jPos" aria-label="Position"><option>Yes</option><option>No</option><option>Buy</option><option>Sell</option></select>
+    <input id="jStake" type="number" step="0.01" min="0" placeholder="Stake" aria-label="Stake" required>
+    <input id="jPnl" type="number" step="0.01" placeholder="Result +/-" aria-label="Profit or loss" required>
+    <button class="cta" type="submit">Log trade</button>
+   </form>
+   <div class="scroll"><table class="jt"><thead><tr><th>Date</th><th>Market</th><th>Platform</th><th>Side</th><th class="num">Stake</th><th class="num">P/L</th><th></th></tr></thead><tbody id="jRows"></tbody></table></div>
+   <p class="note" id="jNote"></p>
+  </div>
+ </div>
+ <div class="pnl g2" style="margin-top:16px;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center">
+  <div><span class="tag">Artificial intelligence</span><h3 style="font-size:clamp(24px,2.6vw,32px);margin:8px 0 6px">AI used in production, not just in theory</h3><p class="note" style="margin:0 0 14px">Each skill below is running inside ADDO today.</p><div class="comp" id="comp"></div></div>
+  <div><span class="tag">The ADDO AI stack</span><div class="layers" id="layers"></div></div>
+ </div>
+</section>
+
+<section class="wrap band" id="planner">
+ <div class="sh"><div><span class="tag">Planner</span><h2>Plan a build</h2></div><p>Pick what you need. The estimate, phases and stack update as you go; copy the brief to send it.</p></div>
+ <div class="plan">
+  <form class="pnl" id="pform" onsubmit="return false">
+   <fieldset><legend>Project type</legend><div class="opts" id="types"></div></fieldset>
+   <fieldset><legend>Add-ons</legend><div class="opts" id="addons"></div></fieldset>
+   <button class="ghost" type="button" id="reset">Reset choices</button>
+  </form>
+  <div class="pnl">
+   <span class="tag" id="rType">Web app</span>
+   <div class="weeks" id="rWeeks">4–7 wk</div>
+   <div class="phases" id="phases" aria-hidden="true"></div>
+   <div class="plegend" id="plegend"></div>
+   <p style="margin:16px 0"><span class="tag">Stack</span><br><span id="rStack"></span></p>
+   <button class="cta" type="button" id="copyBrief">Copy brief</button>
+   <p class="note">Week ranges are starting estimates for a single builder; adjust them once you set your own rates.</p>
+  </div>
+ </div>
+</section>
+
+<section class="wrap band" id="contact">
+ <div class="sh"><div><span class="tag">Process and contact</span><h2>How a project runs</h2></div></div>
+ <ol class="route">
+  <li><b>Discover</b><span>Goals, users and must-haves, written into one short brief.</span></li>
+  <li><b>Design</b><span>Screens in Figma, imported into code with colours and text intact.</span></li>
+  <li><b>Build</b><span>Front end, Flask back end, database and AI features, previewed live.</span></li>
+  <li><b>Secure</b><span>HTTPS, auth, protected forms and uploads, backups.</span></li>
+  <li><b>Ship</b><span>Pushed to GitHub, deployed and monitored after launch.</span></li>
+ </ol>
+ <div class="pnl mailp">
+  <h2>Have something to build? Start with a message.</h2>
+  <div><div class="mail" id="pMail">shepherdanoche5@gmail.com</div><p class="row" style="justify-content:flex-start;margin-top:14px"><button class="cta" type="button" id="copyMail">Copy email</button><a class="ghost" id="mailLink" href="mailto:shepherdanoche5@gmail.com">Send an email</a></p></div>
+ </div>
+ <div class="connect">
+  <article class="pnl soc"><div class="sh2"><span class="th" style="background:#5ef2b0"><svg class="i"><use href="#i-chat"/></svg></span><div><b>WhatsApp</b><span>+224 666 74 91 91</span></div></div>
+   <div class="qrw"><svg class="qr" role="img" aria-label="QR code" viewBox="0 0 29 29" class="segno"><path fill="#fff" d="M0 0h29v29h-29z"/><path class="qrline" stroke="#14060d" d="M2 2.5h7m1 0h1m2 0h1m1 0h1m2 0h1m1 0h7m-25 1h1m5 0h1m1 0h1m2 0h2m5 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m2 0h3m1 0h2m3 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h1m3 0h1m5 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m3 0h2m1 0h2m1 0h1m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-16 1h3m1 0h3m-16 1h1m2 0h8m1 0h1m2 0h1m1 0h1m2 0h1m1 0h3m-25 1h3m1 0h1m4 0h1m2 0h1m2 0h2m2 0h5m-21 1h2m1 0h2m2 0h4m1 0h1m1 0h3m1 0h1m2 0h1m-25 1h3m2 0h1m2 0h1m3 0h1m2 0h2m1 0h2m1 0h4m-24 1h2m3 0h1m4 0h2m1 0h2m1 0h2m5 0h1m-25 1h6m1 0h1m4 0h2m1 0h1m4 0h1m2 0h1m-24 1h2m3 0h2m2 0h2m3 0h2m1 0h1m2 0h5m-25 1h1m1 0h2m1 0h1m1 0h3m2 0h1m2 0h1m3 0h1m1 0h2m1 0h1m-25 1h1m3 0h1m1 0h6m1 0h2m1 0h5m1 0h2m-16 1h1m3 0h1m1 0h1m1 0h1m3 0h1m1 0h2m-24 1h7m1 0h2m1 0h1m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1m-25 1h1m5 0h1m1 0h2m2 0h3m1 0h1m3 0h1m-21 1h1m1 0h3m1 0h1m1 0h4m3 0h6m-21 1h1m1 0h3m1 0h1m1 0h1m1 0h4m1 0h4m4 0h2m-25 1h1m1 0h3m1 0h1m4 0h1m2 0h1m2 0h1m2 0h5m-25 1h1m5 0h1m2 0h4m1 0h1m4 0h2m1 0h3m-25 1h7m1 0h2m1 0h1m2 0h1m1 0h1m1 0h1m2 0h1m2 0h1"/></svg></div>
+   <div class="acts"><a class="cta" href="https://wa.me/224666749191" target="_blank" rel="noopener">Open chat</a><button class="ghost" type="button" data-copy="+224666749191" data-msg="Number copied">Copy number</button></div></article>
+  <article class="pnl soc"><div class="sh2"><span class="th" style="background:#a66bff"><svg class="i"><use href="#i-people"/></svg></span><div><b>Facebook</b><span>Shepherd Addo Anokye</span></div></div>
+   <div class="qrw"><svg class="qr" role="img" aria-label="QR code" viewBox="0 0 33 33" class="segno"><path fill="#fff" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#14060d" d="M2 2.5h7m2 0h1m1 0h1m3 0h1m1 0h3m2 0h7m-29 1h1m5 0h1m1 0h1m1 0h4m1 0h1m2 0h3m1 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m2 0h4m1 0h1m1 0h1m2 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h2m3 0h1m3 0h2m2 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m4 0h1m2 0h3m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h3m3 0h1m1 0h3m2 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-19 1h2m1 0h1m1 0h1m1 0h2m1 0h1m-21 1h1m1 0h1m1 0h1m1 0h1m5 0h2m1 0h6m3 0h1m2 0h1m-28 1h1m2 0h2m2 0h2m1 0h1m1 0h5m4 0h2m2 0h1m2 0h1m-27 1h1m2 0h3m1 0h3m1 0h2m2 0h1m3 0h2m3 0h3m-28 1h4m2 0h1m3 0h1m1 0h1m1 0h1m1 0h2m2 0h2m1 0h1m2 0h1m-27 1h2m3 0h1m1 0h2m3 0h2m2 0h1m1 0h4m2 0h1m1 0h2m-29 1h3m1 0h1m2 0h1m2 0h1m2 0h2m2 0h2m1 0h4m1 0h1m2 0h1m-29 1h1m1 0h1m1 0h1m1 0h1m1 0h4m5 0h2m3 0h2m1 0h1m1 0h2m-29 1h6m2 0h11m1 0h1m4 0h1m1 0h1m-28 1h4m2 0h2m1 0h1m1 0h1m1 0h1m2 0h2m1 0h5m1 0h1m1 0h2m-28 1h1m10 0h1m2 0h2m3 0h3m2 0h2m1 0h1m-29 1h1m2 0h1m2 0h2m1 0h3m2 0h1m3 0h1m3 0h2m3 0h2m-28 1h2m1 0h2m2 0h1m1 0h6m1 0h1m2 0h1m1 0h1m2 0h1m1 0h1m-28 1h1m2 0h2m1 0h1m1 0h1m1 0h1m1 0h3m2 0h1m1 0h6m-17 1h1m1 0h1m1 0h1m4 0h1m1 0h2m3 0h1m1 0h3m-29 1h7m2 0h2m1 0h2m4 0h3m1 0h1m1 0h2m1 0h2m-29 1h1m5 0h1m3 0h1m1 0h3m1 0h3m1 0h1m3 0h2m1 0h2m-29 1h1m1 0h3m1 0h1m1 0h4m2 0h4m2 0h5m-25 1h1m1 0h3m1 0h1m2 0h2m1 0h1m4 0h4m3 0h1m1 0h3m-29 1h1m1 0h3m1 0h1m1 0h1m1 0h3m1 0h1m2 0h2m1 0h1m2 0h3m2 0h1m-29 1h1m5 0h1m4 0h2m2 0h3m1 0h2m3 0h1m2 0h1m-28 1h7m1 0h4m1 0h2m1 0h2m1 0h7m1 0h2"/></svg></div>
+   <div class="acts"><a class="cta" href="https://www.facebook.com/share/1E1HHpbr5i/" target="_blank" rel="noopener">Open profile</a><button class="ghost" type="button" data-copy="https://www.facebook.com/share/1E1HHpbr5i/" data-msg="Link copied">Copy link</button></div></article>
+  <article class="pnl soc"><div class="sh2"><span class="th" style="background:#ff6f9c"><svg class="i"><use href="#i-camera"/></svg></span><div><b>Instagram</b><span>@shepherdaddoanockye</span></div></div>
+   <div class="qrw"><svg class="qr" role="img" aria-label="QR code" viewBox="0 0 37 37" class="segno"><path fill="#fff" d="M0 0h37v37h-37z"/><path class="qrline" stroke="#14060d" d="M2 2.5h7m1 0h1m1 0h6m2 0h2m1 0h1m1 0h1m2 0h7m-33 1h1m5 0h1m3 0h2m1 0h3m4 0h3m3 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m4 0h3m1 0h1m4 0h2m2 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m2 0h3m1 0h1m4 0h2m2 0h3m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h2m2 0h4m2 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m1 0h2m1 0h2m1 0h4m2 0h1m1 0h1m1 0h1m1 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h3m2 0h1m2 0h1m-21 1h7m1 0h1m1 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h1m2 0h2m3 0h1m-33 1h1m4 0h1m4 0h3m1 0h2m2 0h3m1 0h2m2 0h2m1 0h2m1 0h1m-33 1h3m3 0h1m1 0h2m3 0h1m4 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m-30 1h3m1 0h1m1 0h2m1 0h1m2 0h2m3 0h1m2 0h3m4 0h4m-32 1h1m3 0h3m1 0h2m3 0h1m4 0h1m1 0h1m1 0h4m1 0h3m1 0h2m-31 1h1m1 0h2m2 0h3m1 0h1m2 0h7m1 0h1m2 0h1m2 0h1m1 0h2m-30 1h1m1 0h8m1 0h1m2 0h1m2 0h1m4 0h3m1 0h1m1 0h1m-31 1h1m1 0h1m5 0h4m2 0h2m1 0h2m1 0h2m1 0h4m1 0h2m-31 1h1m1 0h6m1 0h1m2 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h2m1 0h3m2 0h1m-33 1h4m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m2 0h9m1 0h2m1 0h1m-31 1h1m1 0h1m1 0h1m3 0h1m1 0h2m3 0h2m2 0h1m3 0h1m1 0h2m1 0h2m-32 1h3m1 0h2m4 0h3m2 0h2m2 0h1m1 0h3m1 0h1m1 0h6m-33 1h2m2 0h1m1 0h3m1 0h1m3 0h1m7 0h1m1 0h2m2 0h2m1 0h2m-33 1h4m4 0h3m1 0h1m1 0h3m1 0h4m1 0h1m1 0h2m3 0h1m1 0h1m-33 1h1m1 0h5m1 0h4m4 0h2m2 0h3m1 0h2m3 0h1m1 0h1m-32 1h1m1 0h4m3 0h1m3 0h2m2 0h3m1 0h1m3 0h2m2 0h3m-32 1h1m3 0h5m1 0h1m2 0h4m3 0h1m1 0h1m1 0h5m2 0h2m-25 1h1m1 0h3m2 0h2m1 0h3m2 0h2m3 0h1m1 0h1m1 0h1m-33 1h7m1 0h1m1 0h2m1 0h1m2 0h3m1 0h1m1 0h3m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m1 0h3m1 0h1m3 0h2m1 0h3m1 0h2m3 0h5m-33 1h1m1 0h3m1 0h1m1 0h1m3 0h1m1 0h2m2 0h1m3 0h1m1 0h6m-30 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h7m1 0h1m1 0h1m2 0h1m3 0h1m-33 1h1m1 0h3m1 0h1m1 0h6m1 0h1m1 0h1m2 0h2m1 0h5m2 0h1m-31 1h1m5 0h1m1 0h3m1 0h4m3 0h4m5 0h3m-31 1h7m2 0h1m1 0h1m2 0h2m1 0h3m2 0h3m1 0h2m3 0h1"/></svg></div>
+   <div class="acts"><a class="cta" href="https://www.instagram.com/shepherdaddoanockye" target="_blank" rel="noopener">Open profile</a><button class="ghost" type="button" data-copy="https://www.instagram.com/shepherdaddoanockye" data-msg="Link copied">Copy link</button></div></article>
+ </div>
+</section>
+<footer><div class="wrap"><span>ADDO.CORP</span><span>Websites, apps, AI agents and markets</span></div></footer>
+</main>
+
+<div class="ov" id="cmdOv" role="dialog" aria-modal="true" aria-label="Search"><div class="box">
+ <input id="cmdIn" type="text" placeholder="Jump to a section, capability or action" autocomplete="off" aria-label="Search">
+ <ul class="cmds" id="cmdList"></ul>
+</div></div>
+<div class="ov" id="profOv" role="dialog" aria-modal="true" aria-label="Edit profile"><div class="box">
+ <form class="form" id="profForm">
+  <h3>Edit profile</h3>
+  <label>Name<input id="fName" type="text"></label>
+  <label>Role<input id="fRole" type="text"></label>
+  <label>Age<input id="fAge" type="number" min="1" max="120"></label>
+  <label>Email<input id="fMail" type="email"></label>
+  <label>Time zone<input id="fTz" type="text" placeholder="Africa/Conakry"></label>
+  <div class="row"><button class="ghost" type="button" id="chgPass">Change password</button><button class="ghost" type="button" id="lockBtn">Lock editing</button><span style="flex:1"></span><button class="ghost" type="button" id="profCancel">Cancel</button><button class="cta" type="submit" id="profSave">Save profile</button></div>
+ </form>
+</div></div>
+<div class="ov" id="authOv" role="dialog" aria-modal="true" aria-labelledby="authTitle"><div class="box">
+ <form class="form" id="authForm" autocomplete="on">
+  <h3 id="authTitle">Sign in to edit</h3>
+  <p class="note" id="authMsg" style="margin:0">Enter your email and password to change your profile.</p>
+  <label id="aMailWrap">Email<input id="aMail" type="email" autocomplete="username" required></label>
+  <label>Password<input id="aPass" type="password" autocomplete="current-password" required minlength="8"></label>
+  <label id="aConfWrap" hidden>Confirm password<input id="aConf" type="password" autocomplete="new-password"></label>
+  <p class="err" id="aErr" role="alert"></p>
+  <div class="row"><button class="ghost" type="button" id="authCancel">Cancel</button><button class="cta" type="submit" id="aSubmit">Sign in</button></div>
+  <p class="note" id="aForgot" style="margin:0">Forgot your password? Ask Claude in your Addo.corp project to reset it.</p>
+ </form>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem('addox.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('addox.'+k,JSON.stringify(v));return true}catch(e){return false}}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let tt;const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1800)};
+const copy=(txt,msg)=>{const no=()=>toast('Copy blocked here, select the text instead');try{navigator.clipboard.writeText(txt).then(()=>toast(msg),no)}catch(e){no()}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-copy]');if(b)copy(b.dataset.copy,b.dataset.msg||'Copied')});
+
+const ST=['Chat agent','Voice and PC control','Long-term memory','Vision','Gmail and Calendar','Code execution','Tools and craft','Databases'];
+const SS=['Chat','Voice','Memory','Vision','Mail','Code','Tools','Data'];
+const T=[
+ {k:'Interface',c:'#ff2e6e',ic:'voice',f:[['Voice mode','Wakes on “ADDO”, listens and answers aloud in several languages.',2],['Vision','Reads and analyses images you attach or paste.',4],['Live preview','Renders the site in a side panel and refreshes after every reply.',6],['Secure login','Password login, private access from PC and phone over Tailscale.',2],['Location','Browser geolocation with reverse geocoding.',2],['File reader','Reads text and code files you upload.',4]]},
+ {k:'Integrations',c:'#a66bff',ic:'plug',f:[['Gmail + Calendar','Reads, writes and searches old emails and events.',5],['GitHub push','Creates repositories and pushes projects automatically.',7],['Figma to code','Imports designs with their colours and text extracted.',7],['VS Code','Opens any project straight in the editor.',7],['Web search','Answers with live results from the web.',1],['Time and weather','Local time and forecast on request.',1]]},
+ {k:'Data',c:'#ff9cc0',ic:'db',f:[['Long-term memory','Keeps context across sessions.',3],['SQLite','Local database for small apps.',8],['Supabase','Hosted Postgres, set up and tested.',8],['Firebase','Firestore with security rules, running a live contact form.',8]]},
+ {k:'Automation',c:'#f3e9ee',ic:'bolt',f:[['App control','Opens and closes a whitelist of Windows apps.',2],['Desktop files','Reads and creates files, never deletes them.',2],['Code runner','Writes and runs sites in a sandbox with a 30-second timeout.',6],['Project import','Copies existing folders in and detects the project type.',6],['One-click start','Launcher plus automatic start at boot.',2]]},
+ {k:'Craft',c:'#c9a6ff',ic:'pen',f:[['Design languages','Nine styles, from glassmorphism to spatial UI.',7],['3D and motion','CSS transitions, 3D transforms and Three.js.',7],['Web security','HTTPS, auth, WAF, backups, protected forms and monitoring.',7]]}
+];
+const ALL=T.flatMap(t=>t.f.map(f=>({n:f[0],d:f[1],s:f[2],t})));
+const CUM=ST.map((_,i)=>ALL.filter(a=>a.s<=i+1).length);
+$('#sCap').textContent=ALL.length;$('#sInt').textContent=T[1].f.length;$('#sDb').textContent=T[2].f.length-1;
+$('#recent').textContent=ST.slice(-3).reverse().join(', ')+'.';
+
+/* profile */
+const DEF={name:'Shepherd Addo Anokye',age:'29',role:'Dashboard specialist, full-stack developer, AI builder and trader',mail:'shepherdanoche5@gmail.com',tz:'Africa/Conakry'};
+let prof={...DEF},busy=false;
+const pickProf=d=>{const o={...DEF};for(const k of Object.keys(DEF))if(typeof d[k]==='string'&&d[k].trim())o[k]=d[k].slice(0,160);return o};
+const tick=()=>{const o={hour:'2-digit',minute:'2-digit'};let s;try{s=new Intl.DateTimeFormat('en-GB',{...o,timeZone:prof.tz||undefined}).format(new Date())}catch(e){s=new Intl.DateTimeFormat('en-GB',o).format(new Date())}$('#clock').textContent=s};
+const applyProf=()=>{$('#pName').textContent=prof.name;$('#pRole').textContent=prof.role;$('#pAge').textContent=prof.age||'29';$('#pMail').textContent=prof.mail;$('#mailLink').href='mailto:'+prof.mail;tick()};
+const clockT=setInterval(tick,20000);
+const applyAvail=()=>{$('#avail').classList.toggle('busy',busy);$('#avail span').textContent=busy?'Booked, waitlist open':'Open to projects'};
+
+/* chart */
+const lc=$('#lc');
+const draw=()=>{const W=lc.clientWidth,H=lc.clientHeight;if(!W)return;const l=28,r=22,t=30,b=24,n=CUM.length,mx=24;
+ const x=i=>l+i*(W-l-r)/(n-1),y=v=>t+(1-v/mx)*(H-t-b);const P=CUM.map((v,i)=>[x(i),y(v)]);
+ let d=`M${P[0][0]},${P[0][1]}`;for(let i=0;i<n-1;i++){const p0=P[i-1]||P[i],p1=P[i],p2=P[i+1],p3=P[i+2]||p2;d+=` C${p1[0]+(p2[0]-p0[0])/6},${p1[1]+(p2[1]-p0[1])/6} ${p2[0]-(p3[0]-p1[0])/6},${p2[1]-(p3[1]-p1[1])/6} ${p2[0]},${p2[1]}`}
+ const last=P[n-1],narrow=W<440;
+ lc.innerHTML=`<defs><linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff2e6e" stop-opacity=".3"/><stop offset="1" stop-color="#ff2e6e" stop-opacity="0"/></linearGradient><filter id="gl" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+ ${[0,8,16,24].map(v=>`<line x1="${l}" x2="${W-r}" y1="${y(v)}" y2="${y(v)}" stroke="#fff" stroke-opacity=".07" stroke-dasharray="2 4"/><text x="${l-8}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join('')}
+ <rect x="${last[0]-10}" y="${last[1]}" width="20" height="${H-b-last[1]}" fill="#ff2e6e" fill-opacity=".12"/>
+ <path d="${d} L${last[0]},${H-b} L${P[0][0]},${H-b}Z" fill="url(#ar)"/>
+ <path d="${d}" fill="none" stroke="#ff2e6e" stroke-width="2.5" filter="url(#gl)"/>
+ ${P.map((p,i)=>`<rect x="${p[0]-3.5}" y="${p[1]-3.5}" width="7" height="7" transform="rotate(45 ${p[0]} ${p[1]})" fill="${i===n-1?'#ff2e6e':'#09060b'}" stroke="#ff2e6e" stroke-width="1.5"/>`).join('')}
+ <rect x="${last[0]-18}" y="${last[1]-30}" width="36" height="20" fill="#ff2e6e"/><text x="${last[0]}" y="${last[1]-16}" text-anchor="middle" style="fill:#14060d;font-weight:700">${CUM[n-1]}</text>
+ ${SS.map((s,i)=>narrow&&![0,2,4,n-1].includes(i)?'':`<text x="${x(i)}" y="${H-4}" text-anchor="${i===0?'start':i===n-1?'end':'middle'}">${s}</text>`).join('')}`};
+const ro=new ResizeObserver(draw);ro.observe(lc);
+
+/* table */
+$('#filt').innerHTML='<option value="">All disciplines</option>'+T.map(t=>`<option>${t.k}</option>`).join('');
+const slug=n=>'cap-'+n.replace(/\W+/g,'-').toLowerCase();
+const rows=()=>{const f=$('#filt').value;$('#rows').innerHTML=ALL.filter(a=>!f||a.t.k===f).sort((a,b)=>a.s-b.s).map(a=>`<tr id="${slug(a.n)}"><td><div class="cap"><span class="th" style="background:${a.t.c}"><svg class="i"><use href="#i-${a.t.ic}"/></svg></span><div><b>${a.n}</b><small>${a.t.k}</small></div></div></td><td class="hide-s desc">${a.d}</td><td class="stg"><b>Stage ${a.s}</b><br>${ST[a.s-1]}</td><td class="hide-s"><div class="track">${ST.map((_,i)=>`<i class="${i+1===a.s?'on':i+1<a.s?'p':''}"></i>`).join('')}</div></td></tr>`).join('')};
+$('#filt').addEventListener('change',rows);rows();
+
+/* services */
+const S=[['Dashboards, my specialty','chart','Professional dashboards for businesses and traders: KPIs, live charts, trackers, admin panels and secure owner sign-in, in glass, neon or clean styles.',['KPIs','Live charts','Admin panels','Secure sign-in'],'Three built so far: Addo.corp Glass, Neon and Studio.'],['Websites','web','Fast, responsive sites with motion where it helps, in the design language that fits the brand.',['HTML, CSS, JS','Three.js','Figma import']],['Web apps','layers','Accounts, data and real workflows on a Python back end that can grow.',['Python','Flask','REST APIs']],['AI agents','voice','Chat, voice and vision assistants that use tools, remember context and act.',['Claude API','Voice','Vision','Memory']],['Databases and back ends','db','The right store for the job, secured with proper rules.',['SQLite','Supabase','Firebase']],['Mobile-ready apps','phone','Touch-first web apps that work on any phone.',['Responsive','PWA'],'Native iOS and Android apps are on the roadmap.']];
+const SC=['#ff2e6e','#a66bff','#ff9cc0','#ff2e6e','#f3e9ee','#c9a6ff'];
+$('#svc').innerHTML=S.map((s,i)=>`<article class="pnl"><span class="th" style="background:${SC[i]}"><svg class="i"><use href="#i-${s[1]}"/></svg></span><h3>${s[0]}</h3><p>${s[2]}</p>${s[4]?`<p class="later">${s[4]}</p>`:''}<ul class="tags">${s[3].map(x=>`<li>${x}</li>`).join('')}</ul></article>`).join('');
+
+/* trading */
+const MK=[{n:'Prediction markets',p:['Polymarket','Kalshi'],d:'Event contracts, including short-term crypto up-or-down markets read from the chart.'},{n:'Stocks',p:['Wealthsimple'],d:'Fractional shares in companies like NVIDIA.'},{n:'New platforms',p:['TradeFox','OG.com'],d:'Following the newer prediction-market platforms as they launch.'}];
+$('#mk').innerHTML=MK.map(m=>`<div><b>${m.n}</b><p>${m.d}</p><ul class="tags">${m.p.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('');
+const SAMPLE=[['2026-11-03','BTC up in the next hour','Polymarket','Yes',20,14],['2026-11-07','Fed holds rates in December','Kalshi','Yes',25,9],['2026-11-12','NVIDIA fractional share','Wealthsimple','Buy',50,-6],['2026-11-18','ETH above daily open at close','Polymarket','No',15,-15],['2026-11-22','BTC up in the next hour','Polymarket','Yes',20,11]].map(r=>({d:r[0],m:r[1],p:r[2],s:r[3],k:r[4],v:r[5],x:1}));
+let J=store.get('journal',null)||SAMPLE;
+const money=v=>(v<0?'−':'+')+'$'+Math.abs(v).toFixed(2);
+const eq=$('#eq');
+const drawEq=()=>{const W=eq.clientWidth,H=eq.clientHeight;if(!W)return;const L=[...J].sort((a,b)=>a.d<b.d?-1:1);let c=0;const pts=[0,...L.map(t=>c+=t.v)];
+ if(L.length<1){eq.innerHTML=`<text x="${W/2}" y="${H/2}" text-anchor="middle">Log a trade to start the curve</text>`;return}
+ const lo=Math.min(0,...pts),hi=Math.max(0,...pts),sp=hi-lo||1,l=8,r=56,t=12,b=12;const x=i=>l+i*(W-l-r)/Math.max(1,pts.length-1),y=v=>t+(hi-v)/sp*(H-t-b);
+ const d=pts.map((v,i)=>`${i?'L':'M'}${x(i)},${y(v)}`).join(''),end=pts[pts.length-1],col=end>=0?'#5ef2b0':'#ff6b88';
+ eq.innerHTML=`<line x1="${l}" x2="${W-r}" y1="${y(0)}" y2="${y(0)}" stroke="#fff" stroke-opacity=".18" stroke-dasharray="3 4"/><text x="${W-r+8}" y="${y(0)+4}">$0</text><path d="${d}L${x(pts.length-1)},${y(0)}L${x(0)},${y(0)}Z" fill="${col}" fill-opacity=".12"/><path d="${d}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/><circle cx="${x(pts.length-1)}" cy="${y(end)}" r="4.5" fill="${col}"/><text x="${W-r+8}" y="${Math.min(H-4,Math.max(14,y(end)+4))}" style="fill:${col};font-weight:600">${money(end).replace('.00','')}</text>`};
+const eqRo=new ResizeObserver(drawEq);eqRo.observe(eq);
+const journal=()=>{const n=J.length,w=J.filter(t=>t.v>0).length,net=J.reduce((s,t)=>s+t.v,0),stk=J.reduce((s,t)=>s+t.k,0);
+ $('#jStats').innerHTML=`<div><b>${n}</b><span>Trades</span></div><div><b>${n?Math.round(w/n*100):0}%</b><span>Win rate</span></div><div><b class="${net>=0?'up':'dn'}">${money(net)}</b><span>Net result</span></div><div><b>${stk?(net/stk*100).toFixed(1):'0'}%</b><span>Return on stake</span></div>`;
+ $('#jRows').innerHTML=n?[...J].map((t,i)=>[t,i]).sort((a,b)=>a[0].d<b[0].d?1:-1).map(([t,i])=>`<tr><td>${esc(t.d)}</td><td>${esc(t.m)}${t.x?'<span class="smp">sample</span>':''}</td><td>${esc(t.p)}</td><td>${esc(t.s)}</td><td class="num">$${(+t.k).toFixed(2)}</td><td class="num ${t.v>=0?'up':'dn'}">${money(t.v)}</td><td><button class="del" type="button" data-del="${i}" aria-label="Delete trade"><svg class="i"><use href="#i-x"/></svg></button></td></tr>`).join(''):'<tr><td colspan="7">No trades yet. Log your first one above.</td></tr>';
+ const hasS=J.some(t=>t.x);$('#jClear').style.display=hasS?'':'none';$('#jNote').textContent=hasS?'Rows tagged sample are examples; clear them and log your own. Entries stay in this browser.':'Entries stay in this browser.';
+ store.set('journal',J);drawEq()};
+$('#jDate').value=new Date().toISOString().slice(0,10);
+$('#jForm').addEventListener('submit',e=>{e.preventDefault();const k=parseFloat($('#jStake').value),v=parseFloat($('#jPnl').value);if(!isFinite(k)||!isFinite(v)){toast('Enter a stake and a result');return}
+ J.push({d:$('#jDate').value,m:$('#jMarket').value.trim(),p:$('#jPlat').value,s:$('#jPos').value,k,v});$('#jMarket').value='';$('#jStake').value='';$('#jPnl').value='';journal();toast('Trade logged')});
+$('#jRows').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(b){J.splice(+b.dataset.del,1);journal();toast('Trade removed')}});
+$('#jClear').addEventListener('click',()=>{J=J.filter(t=>!t.x);journal();toast('Samples cleared')});
+journal();
+
+/* AI */
+const AI=[['Large language models','Builds on the Claude API, with system prompts that set design, style and security rules.'],['Tool-using agents','Gives a model real tools: web search, Gmail, Calendar, GitHub, Figma and VS Code.'],['Memory','Long-term memory so an agent keeps context from one session to the next.'],['Multimodal input','Vision on images, plus speech in and out behind a wake word.'],['Safe autonomy','App whitelists, no-delete file access, sandboxed code with a 30-second timeout.'],['Model choices','Weighed running models locally with Ollama against the cloud, and stays on Claude online for now.']];
+$('#comp').innerHTML=AI.map(a=>`<div><b>${a[0]}</b><p>${a[1]}</p></div>`).join('');
+const LY=[['Interface','Chat, voice, vision, live preview','#ffd0e0',72],['Tools','Search, Gmail, Calendar, GitHub, Figma, VS Code','#ff9cc0',80],['Memory and data','Long-term memory, SQLite, Supabase, Firebase','#ff6f9c',88],['Model','Claude API with custom system prompts','#ff2e6e',95],['Guardrails','Login, Tailscale, whitelists, sandbox, no deletes','#a66bff',100]];
+$('#layers').innerHTML=LY.map(l=>`<div style="background:${l[2]};width:${l[3]}%"><b>${l[0]}</b><span>${l[1]}</span></div>`).join('');
+
+/* planner */
+const TY=[{id:'site',n:'Website',w:[1,2],s:['HTML, CSS, JS','Responsive layout']},{id:'webapp',n:'Web app',w:[3,5],s:['Python + Flask','REST API']},{id:'dash',n:'Dashboard',w:[2,4],s:['Charts','Live data feed']},{id:'agent',n:'AI agent',w:[4,7],s:['Claude API','Tools and memory']},{id:'mobile',n:'Mobile-ready app',w:[3,5],s:['PWA','Touch-first UI']}];
+const AD=[{id:'auth',n:'Login and accounts',w:.5,s:'Auth and sessions'},{id:'db',n:'Database',w:1,s:'Supabase or Firebase'},{id:'ai',n:'AI assistant inside',w:1.5,s:'Claude API'},{id:'voice',n:'Voice',w:1,s:'Speech in and out'},{id:'figma',n:'From a Figma design',w:.5,s:'Figma import'},{id:'motion',n:'3D and motion',w:1,s:'Three.js'},{id:'admin',n:'Admin dashboard',w:1,s:'Admin panel'},{id:'deploy',n:'Deploy and GitHub',w:.5,s:'GitHub, HTTPS hosting'}];
+const PH=[['Discover',.1],['Design',.2],['Build',.45],['Secure',.12],['Ship',.13]];
+const def={t:'webapp',a:['auth','db','deploy']};
+let P=store.get('plan',def);
+$('#types').innerHTML=TY.map(t=>`<label class="opt"><input type="radio" name="ty" id="ty-${t.id}" value="${t.id}"><span>${t.n}</span></label>`).join('');
+$('#addons').innerHTML=AD.map(a=>`<label class="opt"><input type="checkbox" id="ad-${a.id}" value="${a.id}"><span>${a.n}</span></label>`).join('');
+const fmt=n=>(Math.round(n*2)/2).toString();
+const plan=()=>{const t=TY.find(x=>x.id===P.t)||TY[1];const as=AD.filter(a=>P.a.includes(a.id));const add=as.reduce((s,a)=>s+a.w,0);const lo=t.w[0]+add*.8,hi=t.w[1]+add;
+ $('#rType').textContent=t.n+(as.length?` with ${as.length} add-on${as.length>1?'s':''}`:'');$('#rWeeks').textContent=`${fmt(lo)}–${fmt(hi)} wk`;
+ $('#phases').innerHTML=PH.map(p=>`<div style="flex-grow:${p[1]}"></div>`).join('');
+ $('#plegend').innerHTML=PH.map(p=>`<div>${p[0]} <b>${fmt(Math.max(.5,hi*p[1]))} wk</b></div>`).join('');
+ const st=[...t.s,...as.map(a=>a.s)];$('#rStack').textContent=st.join(', ');
+ document.querySelectorAll('#types input').forEach(i=>i.checked=i.value===t.id);document.querySelectorAll('#addons input').forEach(i=>i.checked=P.a.includes(i.value));
+ store.set('plan',P);return{t,as,lo,hi,st}};
+$('#pform').addEventListener('change',e=>{const i=e.target;if(i.name==='ty')P.t=i.value;else P.a=[...document.querySelectorAll('#addons input:checked')].map(x=>x.value);plan()});
+$('#reset').addEventListener('click',()=>{P={t:def.t,a:[...def.a]};plan();toast('Choices reset')});
+$('#copyBrief').addEventListener('click',()=>{const r=plan();copy(`Addo.corp project brief\nType: ${r.t.n}\nAdd-ons: ${r.as.map(a=>a.n).join(', ')||'none'}\nEstimate: ${fmt(r.lo)} to ${fmt(r.hi)} weeks\nStack: ${r.st.join(', ')}`,'Brief copied')});
+plan();
+$('#copyMail').addEventListener('click',()=>copy(prof.mail,'Email copied'));
+
+/* overlays */
+const openOv=(id,f)=>{$(id).classList.add('open');setTimeout(()=>$(f).focus(),10)};
+const closeOv=()=>document.querySelectorAll('.ov').forEach(o=>o.classList.remove('open'));
+
+/* owner-only editing: the server only accepts writes from the owner; the password is a second lock */
+let db=null,user=null,owner=false,uid=null;
+const profRef=()=>db.doc('site/profile'),authRef=()=>db.doc('data/users/'+uid+'/auth');
+const enc=new TextEncoder(),b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))),unb64=x=>Uint8Array.from(atob(x),c=>c.charCodeAt(0));
+const derive=async(p,salt,it)=>{const k=await crypto.subtle.importKey('raw',enc.encode(p),'PBKDF2',false,['deriveBits']);return b64(await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:it,hash:'SHA-256'},k,256))};
+const ss={get(k){try{return sessionStorage.getItem(k)}catch(e){return null}},set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}},del(k){try{sessionStorage.removeItem(k)}catch(e){}}};
+let unlockUntil=+(ss.get('addox.unlock')||0),fails=+(ss.get('addox.fails')||0),waitUntil=+(ss.get('addox.wait')||0);
+const isUnlocked=()=>Date.now()<unlockUntil;
+const setUnlocked=on=>{unlockUntil=on?Date.now()+30*60*1000:0;on?ss.set('addox.unlock',String(unlockUntil)):ss.del('addox.unlock')};
+let authMode='login',authStored=null,afterAuth=null;
+const authUI=()=>{const setup=authMode!=='login';$('#authTitle').textContent=authMode==='setup'?'Set up your sign-in':authMode==='change'?'Change password':'Sign in to edit';
+ $('#authMsg').textContent=authMode==='setup'?'Choose the email and password you will use to unlock profile editing. Use at least 8 characters.':authMode==='change'?'Enter a new password of at least 8 characters.':'Enter your email and password to change your profile.';
+ $('#aMailWrap').hidden=authMode==='change';$('#aConfWrap').hidden=!setup;$('#aForgot').hidden=setup;$('#aPass').autocomplete=setup?'new-password':'current-password';$('#aSubmit').textContent=authMode==='login'?'Sign in':'Save password';$('#aErr').textContent=''};
+const openAuth=async(mode,then)=>{if(!owner||!db||!uid){toast('Only the owner can edit this dashboard');return}afterAuth=then||null;
+ if(mode!=='change'){try{const snap=await authRef().get();authStored=snap.exists?snap.data():null}catch(e){toast('Sign-in is unavailable right now');return}mode=authStored&&authStored.hash?'login':'setup'}
+ authMode=mode;authUI();$('#aMail').value=authMode==='setup'?(prof.mail||''):'';$('#aPass').value='';$('#aConf').value='';closeOv();openOv('#authOv',authMode==='change'?'#aPass':'#aMail')};
+const requireUnlock=then=>{if(!owner)return;if(isUnlocked())then();else openAuth('login',then)};
+$('#authCancel').addEventListener('click',closeOv);
+$('#authForm').addEventListener('submit',async e=>{e.preventDefault();const err=m=>$('#aErr').textContent=m;const pass=$('#aPass').value,mail=$('#aMail').value.trim().toLowerCase();$('#aSubmit').disabled=true;
+ try{
+  if(authMode==='login'){
+   if(Date.now()<waitUntil){err(`Too many tries. Wait ${Math.ceil((waitUntil-Date.now())/1000)} seconds.`);return}
+   const h=await derive(pass,unb64(authStored.salt),authStored.iter||210000);
+   if(mail===String(authStored.email||'').toLowerCase()&&h===authStored.hash){fails=0;ss.del('addox.fails');setUnlocked(true);closeOv();toast('Unlocked for 30 minutes');const f=afterAuth;afterAuth=null;if(f)f()}
+   else{fails++;ss.set('addox.fails',String(fails));if(fails>=5){fails=0;ss.del('addox.fails');waitUntil=Date.now()+60000;ss.set('addox.wait',String(waitUntil));err('Too many tries. Wait 60 seconds.')}else err('Email or password is incorrect.')}
+  }else{
+   if(authMode==='setup'&&!/^\S+@\S+\.\S+$/.test(mail)){err('Enter a valid email.');return}
+   if(pass.length<8){err('Use at least 8 characters.');return}
+   if(pass!==$('#aConf').value){err('The two passwords do not match.');return}
+   const salt=crypto.getRandomValues(new Uint8Array(16)),iter=210000,hash=await derive(pass,salt,iter);
+   const email=authMode==='change'?String(authStored.email||prof.mail).toLowerCase():mail;
+   await authRef().set({email,salt:b64(salt),hash,iter});authStored={email,salt:b64(salt),hash,iter};
+   setUnlocked(true);closeOv();toast(authMode==='change'?'Password changed':'Sign-in set up, editing unlocked');const f=afterAuth;afterAuth=null;if(f)f()}
+ }catch(x){err('Could not reach the server. Try again.')}finally{$('#aSubmit').disabled=false}});
+const fillProf=()=>{$('#fName').value=prof.name;$('#fRole').value=prof.role;$('#fAge').value=prof.age||'';$('#fMail').value=prof.mail;$('#fTz').value=prof.tz;openOv('#profOv','#fName')};
+const editProf=()=>requireUnlock(fillProf);
+$('#gear').addEventListener('click',editProf);
+$('#profCancel').addEventListener('click',closeOv);
+$('#lockBtn').addEventListener('click',()=>{setUnlocked(false);closeOv();toast('Editing locked')});
+$('#chgPass').addEventListener('click',()=>requireUnlock(()=>openAuth('change',fillProf)));
+const saveProfile=async()=>{await profRef().set({...prof,busy})};
+$('#profForm').addEventListener('submit',e=>{e.preventDefault();requireUnlock(async()=>{const btn=$('#profSave');btn.disabled=true;const old=prof;
+ try{prof={name:$('#fName').value.trim()||DEF.name,age:$('#fAge').value.trim(),role:$('#fRole').value.trim(),mail:$('#fMail').value.trim()||DEF.mail,tz:$('#fTz').value.trim()||DEF.tz};await saveProfile();applyProf();closeOv();toast('Profile saved for every visitor')}
+ catch(x){prof=old;applyProf();toast('Could not save. Only the owner can edit.')}finally{btn.disabled=false}})});
+const toggleAvail=()=>requireUnlock(async()=>{busy=!busy;applyAvail();try{await saveProfile();toast(busy?'Marked as booked':'Marked as open to projects')}catch(x){busy=!busy;applyAvail();toast('Could not save. Only the owner can edit.')}});
+$('#avail').addEventListener('click',()=>{if(owner)toggleAvail()});
+applyProf();applyAvail();
+(async()=>{try{if(!window.claude||!window.claude.use)return;
+ [user,db]=await Promise.all([claude.use('user'),claude.use('db')]);
+ if(db){profRef().onSnapshot(sn=>{if(sn.exists){const d=sn.data()||{};prof=pickProf(d);busy=!!d.busy;applyProf();applyAvail()}},()=>{})}
+ owner=!!(user&&db&&await user.isOwner().catch(()=>false));
+ if(owner){uid=await user.id();if(!uid){owner=false;return}document.body.classList.add('owner')}
+}catch(e){}})();
+
+/* nav highlight */
+const navIo=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){document.querySelectorAll('#links a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id))}})},{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('main section[id]').forEach(s=>navIo.observe(s));
+
+/* command palette */
+const go=id=>()=>document.getElementById(id).scrollIntoView({behavior:'smooth'});
+const goCap=n=>()=>{$('#filt').value='';rows();const el=document.getElementById(slug(n));if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.querySelectorAll('td').forEach(td=>{td.style.background='rgba(255,46,110,.2)';setTimeout(()=>td.style.background='',1600)})}};
+const C=[['Home','Section',go('home')],['Capabilities','Section',go('index')],['Services','Section',go('services')],['Trading and AI','Section',go('trading')],['Log a trade','Action',()=>{go('trading')();setTimeout(()=>$('#jMarket').focus(),400)}],['Plan a build','Section',go('planner')],['Contact','Section',go('contact')],['Copy email','Action',()=>copy(prof.mail,'Email copied')],['Copy project brief','Action',()=>$('#copyBrief').click()],['Edit profile','Owner',()=>setTimeout(editProf,20),1],['Toggle availability','Owner',toggleAvail,1],['Lock editing','Owner',()=>{setUnlocked(false);toast('Editing locked')},1],...ALL.map(a=>[a.n,a.t.k,goCap(a.n)])];
+let cur=[],sel=0;
+const renderCmd=()=>{const q=$('#cmdIn').value.toLowerCase().trim();cur=C.filter(c=>(!c[3]||owner)&&(!q||(c[0]+' '+c[1]).toLowerCase().includes(q))).slice(0,10);sel=Math.min(sel,Math.max(0,cur.length-1));
+ $('#cmdList').innerHTML=cur.length?cur.map((c,k)=>`<li data-k="${k}" class="${k===sel?'act':''}">${esc(c[0])}<span>${esc(c[1])}</span></li>`).join(''):'<li>No match. Try “planner” or “voice”.</li>'};
+const run=k=>{const c=cur[k];if(!c)return;closeOv();c[2]()};
+const openCmd=()=>{$('#cmdIn').value='';sel=0;renderCmd();openOv('#cmdOv','#cmdIn')};
+$('#openCmd').addEventListener('click',openCmd);$('#railMenu').addEventListener('click',openCmd);
+$('#cmdIn').addEventListener('input',()=>{sel=0;renderCmd()});
+$('#cmdList').addEventListener('click',e=>{const li=e.target.closest('li[data-k]');if(li)run(+li.dataset.k)});
+$('#cmdIn').addEventListener('keydown',e=>{if(e.key==='ArrowDown'){sel=Math.min(sel+1,cur.length-1);renderCmd();e.preventDefault()}else if(e.key==='ArrowUp'){sel=Math.max(sel-1,0);renderCmd();e.preventDefault()}else if(e.key==='Enter')run(sel)});
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeOv()}));
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCmd()}else if(e.key==='Escape')closeOv()});
+}
+</script>
+</body>
+</html>
